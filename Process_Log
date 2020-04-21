@@ -1,4 +1,4 @@
-20200421-->GEE_8052664
+20200421-->GEE_8052664(harmonic_num)
 "Analyzing the images of 2017_2019\n",
 "Exporting users/wang8052664/North_China_Plain/Fourier_imgs/Fourier_img_2017_2019_harmonic_1",
 "Analyzing the images of 2017_2019\n",
@@ -10,14 +10,8 @@
 "Analyzing the images of 2017_2019\n",
 "Exporting users/wang8052664/North_China_Plain/Fourier_imgs/Fourier_img_2017_2019_harmonic_5"
 
-20200421-->Win
-Analyzing the images of 2015_2015
-Fourier_img_2015_2015_harmonic_3
-Analyzing the images of 2015_2016
-Fourier_img_2015_2016_harmonic_3
-Analyzing the images of 2015_2017
-Fourier_img_2015_2017_harmonic_3
-Analyzing the images of 2015_2018
-Fourier_img_2015_2018_harmonic_3
-Analyzing the images of 2015_2019
-Fourier_img_2015_2019_harmonic_3
+20200421-->GEE_608583 (Fourier-range)
+Analyzing the images of 2018_2019
+Fourier_Range_2_Year_2018_2019
+Analyzing the images of 2019_2019
+Fourier_Range_1_Year_2019_2019
