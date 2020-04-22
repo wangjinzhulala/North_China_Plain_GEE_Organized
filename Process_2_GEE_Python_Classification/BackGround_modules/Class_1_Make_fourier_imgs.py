@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[3]:
 
 
 import ee
@@ -14,7 +14,7 @@ import numpy as np
 import seaborn as sns
 
 
-# In[2]:
+# In[4]:
 
 
 ee.Initialize()
@@ -26,21 +26,17 @@ ee.Initialize()
 
 
 
-# In[1]:
+# In[29]:
 
 
 class Make_Fourier:
     
     '''This class create Fourier_image according to time range, harmonic number and indexse.
 
-    For input:1) start_date and end_date is a string like '2017-01-01'.
-              2) hamornics = 3
-              3) Normalized_Index = ['NDVI','NDBI','EVI']
+    1) start_date and end_date is a string like '2017-01-01'.
+    2) hamornics = 3
+    3) Normalized_Index = ['NDVI','NDBI','EVI']
 
-    For output: 1) the output is a list of [[fig_orginal_ndvi,fig_fit_ndvi],
-                                            [fig_orginal_ndbi,fig_fit_ndbi],
-                                            [fig_orginal_evi,fig_fit_evi]]
-                2) the Stp_4_Make_a_figure function take the default point = (116.3, 38.5)
                 
                 
     __________________________An example of how to use this class____________________
@@ -54,8 +50,18 @@ class Make_Fourier:
     # Step_4 is not necessary for the analysis.
     #test.Stp_4_Make_a_figure()
     
+    #____________OUT_PUT______________
+    
     # get the Fourier img.
     Fourier_img = test.harmonicTrendCoefficients
+    
+    # get the Residule img.
+    Residule_img = test.harmonicTrendResidule
+    
+    # get discrete original/fitted Normalized value
+    # for example
+    Original_NDVI_series = test.harmonicLandsat.select(['NDVI'])
+    Fitted_NDVI_series   = test.fittedHarmonic['NDVI']
     ____________________________________________________________________________________
     '''    
    
@@ -72,19 +78,19 @@ class Make_Fourier:
         
         #______________________________Condition to define the right landsat img collecion__________________________
         if self.end_date.get('year').getInfo() <= 2010:
-            self.Landsat_img = ee.ImageCollection("LANDSAT/LT05/C01/T1")
+            self.Landsat_img = ee.ImageCollection("LANDSAT/LT05/C01/T1_TOA")
             self.ND_formula = {'NDVI':['B4','B3'],
                           'NDBI':['B5','B4'],
                           'EVI':"2.5 * ((b('B4')-b('B3'))*1.0 / (b('B4')*1.0 + 6.0 * b('B3') - 7.5 * b('B1') + 1.0))"}
 
         elif self.end_date.get('year').getInfo() <= 2013:
-            self.Landsat_img = ee.ImageCollection("LANDSAT/LE07/C01/T1")
+            self.Landsat_img = ee.ImageCollection("LANDSAT/LE07/C01/T1_TOA")
             self.ND_formula = {'NDVI':['B4','B3'],
                           'NDBI':['B5','B4'],
                           'EVI':"2.5 * ((b('B4')-b('B3'))*1.0 / (b('B4')*1.0 + 6.0 * b('B3') - 7.5 * b('B1') + 1.0))"}
 
         else:
-            self.Landsat_img = ee.ImageCollection("LANDSAT/LC08/C01/T1")
+            self.Landsat_img = ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA")
             self.ND_formula = {'NDVI':['B5','B4'],
                           'NDBI':['B6','B5'],
                           'EVI':"2.5 * ((b('B5')-b('B4'))*1.0 / (b('B5')*1.0 + 6.0 * b('B4') - 7.5 * b('B2') + 1.0))"}
@@ -106,24 +112,11 @@ class Make_Fourier:
         self.sinNames = ['sin_' + str(i) for i in self.harmonicFrequencies]
         self.sinuate_and_constant = self.cosNames +  self.sinNames + ['constant','t']
         
-        # create necessary names for harmonic fitting of different indexes.
-        Independents_variable_names = []
+        # Add normalized index ahead of all sin/cos names.
+        self.Independents_variable_names = [f'{index}_{sin_cos_name}' 
+                                            for index in self.Normalized_Index
+                                            for sin_cos_name in self.sinuate_and_constant]
 
-        for index in self.Normalized_Index:
-
-            tmp_name_list = []
-            index_constant = [index + '_' + 'constant']
-            index_t = [index + '_' + 't']
-            
-            for sin_cos in zip(self.cosNames,self.sinNames):
-
-                index_sin = index + '_' + sin_cos[1]
-                index_con = index + '_' + sin_cos[0]
-
-                tmp_name_list.extend([index_sin,index_con])
-
-            Independents_variable_names = Independents_variable_names + tmp_name_list + index_constant + index_t
-        self.Independents_variable_names = Independents_variable_names
 
     def Stp_2_Add_harmonics(self):
         
@@ -141,7 +134,7 @@ class Make_Fourier:
                     .addBands(image.normalizedDifference(self.ND_formula['NDBI']).rename('NDBI'))
                     .float()
                     )
-
+        # EVI are derived from TOA products, so here transfor the Raw data into a TOA product.
         def add_EVI (image):
             return (
                     image
@@ -168,21 +161,22 @@ class Make_Fourier:
                 # Make an image of frequencies.
                 self.frequencies = ee.Image.constant(i);
                 # This band should represent time in radians.
-                time = ee.Image(image).select('t')
+                time    = ee.Image(image).select('t')
                 # Get the cosine terms.
                 cosines = time.multiply(self.frequencies).cos().rename(self.cosNames[i-1])
                 # Get the sin terms.
-                sines = time.multiply(self.frequencies).sin().rename(self.sinNames[i-1])
+                sines   = time.multiply(self.frequencies).sin().rename(self.sinNames[i-1])
                 # add cos and sin bands to image
-                image = image.addBands(cosines).addBands(sines)
+                image   = image.addBands(cosines).addBands(sines)
             return image
         
         # apply all the functions
-        self.harmonicLandsat = self.Landsat_img_be_analized.map(lambda x: add_NDVI(x))                                         .map(lambda x: add_NDBI(x))                                         .map(lambda x: add_EVI(x))                                          .map(lambda x: addConstant(x))                                           .map(lambda x: addTime(x))                                               .map(lambda x: addHarmonics(x))
+        self.harmonicLandsat = self.Landsat_img_be_analized.map(lambda x: add_NDVI(x))                                                           .map(lambda x: add_NDBI(x))                                                           .map(lambda x: add_EVI(x))                                                            .map(lambda x: addConstant(x))                                                             .map(lambda x: addTime(x))                                                                 .map(lambda x: addHarmonics(x))
     def Stp_3_Harmonic_fit(self):
         
         harmonicTrendCoefficients_list = []
-        fittedHarmonic_list = []
+        residule_list = []
+        fittedHarmonic_dict = {}
 
         for idx in self.Normalized_Index:
 
@@ -196,19 +190,26 @@ class Make_Fourier:
             harmonicTrend = self.harmonicLandsat.select(ee.List(self.sinuate_and_constant).add(dependent))                     .reduce(ee.Reducer.linearRegression(ee.List(self.sinuate_and_constant).length(), 1)) 
 
             # Turn the array image into a multi-band image of coefficients.
+            # 1) get the coefficients
             harmonicTrendCoefficients = harmonicTrend.select('coefficients').arrayProject([0]).arrayFlatten([independents])
-
+            # 2) get the residuls
+            harmonicTrendResidules    = harmonicTrend.select('residuals').arrayProject([0]).arrayFlatten([[f'{idx}_residule']])
 
             # Compute fitted values.
             # the essense here is using (independents) matrix to multiply the (coefficients) matrix.
-            fittedHarmonic = self.harmonicLandsat.map(lambda image:                                             image.addBands(image.select(self.sinuate_and_constant)                                                                  .multiply(harmonicTrendCoefficients)                                                                   .reduce('sum')                                                                                            .rename(fit_name)))
-
+            fittedHarmonic_dict[idx] = self.harmonicLandsat.map(lambda image:                                             image.addBands(image.select(self.sinuate_and_constant)                                                                  .multiply(harmonicTrendCoefficients)                                                                .reduce('sum')                                                                                      .rename(fit_name)))
+            
+            # add the result into list
+            residule_list.append(harmonicTrendResidules)
             harmonicTrendCoefficients_list.append(harmonicTrendCoefficients)
-            fittedHarmonic_list.append(fittedHarmonic.select([idx,fit_name]))
-                                                      
+ 
+        
+        # multiply all computated by 1000 and convet them into a Signed-16 interge to reduce space.
         self.harmonicTrendCoefficients = ee.Image(harmonicTrendCoefficients_list).multiply(1000).toInt16()
-        self.fittedHarmonic_list = fittedHarmonic_list
-    
+        self.harmonicTrendResidule     = ee.Image(residule_list).multiply(1000).toInt16()
+        self.fittedHarmonic            = fittedHarmonic_dict
+        
+        
     def Stp_4_Make_a_figure(self,point = (116.3, 38.5)):
         
         # Select a arbitrary point in the map.
@@ -265,7 +266,7 @@ class Make_Fourier:
 
 
 
-# In[ ]:
+# In[17]:
 
 
 
