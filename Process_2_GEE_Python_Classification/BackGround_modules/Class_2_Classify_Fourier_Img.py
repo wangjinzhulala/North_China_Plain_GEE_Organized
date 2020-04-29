@@ -19,7 +19,7 @@ ee.Initialize()
 
 
 
-# In[35]:
+# In[3]:
 
 
 class Classification:
@@ -150,8 +150,16 @@ class Classification:
         # ________________________________Train the classifier_______________________________________
         
         # if input img provided, extract its value to Verified points, and make the classifier accordingly 
-        if Input_img != None:
-                            
+        if Input_img == None:
+            
+            self.Verified_pts_train_with_img_value = self.Verified_pts_train.select(self.Input_band + [self.classProperty])
+            self.Verified_pts_test_with_img_value  = self.Verified_pts_test.select(self.Input_band + [self.classProperty])
+            
+            self.classifier = ee.Classifier.smileRandomForest(numberOfTrees = self.Tree_num)                                       .train(features        = self.Verified_pts_train_with_img_value,
+                                              inputProperties = self.Input_band,
+                                              classProperty   = self.classProperty)
+        elif Input_band == None:
+            
             self.Verified_pts_train_with_img_value = self.Input_img.sampleRegions(collection = self.Verified_pts_train, 
                                                                                   properties = [self.classProperty], 
                                                                                   scale      = 30,
@@ -168,10 +176,11 @@ class Classification:
         else:
             self.Verified_pts_train_with_img_value = self.Verified_pts_train.select(self.Input_band + [self.classProperty])
             self.Verified_pts_test_with_img_value  = self.Verified_pts_test.select(self.Input_band + [self.classProperty])
-            
+
             self.classifier = ee.Classifier.smileRandomForest(numberOfTrees = self.Tree_num)                                       .train(features        = self.Verified_pts_train_with_img_value,
                                               inputProperties = self.Input_band,
                                               classProperty   = self.classProperty)
+            
       
     def Stp_1_Classification_on_img(self):
 

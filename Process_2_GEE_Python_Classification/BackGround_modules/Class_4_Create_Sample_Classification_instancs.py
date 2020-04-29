@@ -30,21 +30,22 @@ class Make_Sample_Classification():
     function_1--> Reduce an input FeatureCollection with a given percentage
     
     function_2--> Create a list of tuples from input FeatureCollection,
-                  Note: the input FeatureCollection must have Landsat/Fourier/Mean-normalized band values
-                  The ruturn is like:
-                                      [ ('Landsat',<FeatureCollection with {Landsat} values>)
-                                        ('Fourier',<FeatureCollection with {Fourier} values>)
-                                        ('Landsat_Fourier',<FeatureCollection with {Landsat and Fourier} values>)
-                                        ('Landsat_Mean',<FeatureCollection with {Landsat and Mean_nomalized} values>)
-                                        ('Fourier_Mean',<FeatureCollection with {Fourier and Mean_nomalized} values>)
-                                        ('Landsat_Fourier_Mean',<FeatureCollection with {Landsat_Fourier_Mean} values>)]
+      Note: the input FeatureCollection must have Landsat/Fourier/Mean-normalized band values
+      The ruturn is like:
+      [ ('Landsat',<FeatureCollection with {Landsat} values>)
+        ('Fourier',<FeatureCollection with {Fourier} values>)
+        ('Landsat_Fourier',<FeatureCollection with {Landsat and Fourier} values>)
+        ('Landsat_Mean',<FeatureCollection with {Landsat and Mean_nomalized} values>)
+        ('Fourier_Mean',<FeatureCollection with {Fourier and Mean_nomalized} values>)
+        ('Landsat_Fourier_Mean',<FeatureCollection with {Landsat_Fourier_Mean} values>)]
                                         
     function_3--> Create sample_classificaiton instances (aka, classified sample point) without computation in GEE
-                  Note: need to from Class_2_Classify_Fourier_Img import Classification first to use this funcion
-                  In this function, 1) the input {verified_pt} will be split into a 7/3 partition, the
-                                    2) create a classifier (hidden in the Classificaiton class) from the 7 portion, and
-                                    3) use the classsifier to classify the left 3 portion of sample points and ,
-                                    4) return the classified sample with multiindex of (year,combo_name,percent,tree)
+      Note: need to from Class_2_Classify_Fourier_Img import Classification first to use this funcion
+      In this function,:
+      1) the input {verified_pt} will be split into a 7/3 partition, the
+      2) create a classifier (hidden in the Classificaiton class) from the 7 portion, and
+      3) use the classsifier to classify the left 3 portion of sample points and ,
+      4) return the classified sample with multiindex of (year,combo_name,percent,tree)
                                     
     ___________________________________________Sample of Make_Sample_Classification__________________________________________
     # define variables for the Sample_classification clas
@@ -56,24 +57,39 @@ class Make_Sample_Classification():
     path = 'users/Jinzhu_Deakin/North_China_Plain/Sample_with_Landsat_Fourier_Normalized'
 
     # instantiate the combo_instance dictionary
-    Combo_instance = {}
+    Combo_instance_with_village = {}
 
     # Create sample_classification instances through [year] --> [Percent] --> [band_combination] --> [Tree]
     for year in year_name:
 
-        Verified_sample = ee.FeatureCollection(f'{path}/Verified_point_{year}_extract_Landsat_Fourier_Normalized_img')
-        Zone_sample     = ee.FeatureCollection(f'{path}/Zone_point_{year}_extract_Landsat_Fourier_Normalized_img')
+        # import samples
+        Verified_sample = ee.FeatureCollection(f'{path}/Verified_point_{year}_extract_Landsat_Fourier_Normalized_img')\
+                            .filterMetadata('Built', 'equals', 0)
+        Village_sample  = ee.FeatureCollection(f'{path}/Village_point_{year}_extract_Landsat_Fourier_Normalized_img')
 
-        for pct in percent_value:
+        # make sure they are the same size.
+        min_size = min(Verified_sample.size().getInfo(),Village_sample.size().getInfo())
+        Verified_sample = Verified_sample.randomColumn('z', 101).limit(min_size,'z')
+        Village_sample  = Village_sample.randomColumn('z', 101).limit(min_size,'z')
 
-            Subset_zone_sample  = Make_Sample_Classification.Step_1_Subset_sample(Zone_sample,pct)
+        for pct in percent_reduction:
+
+            # Create percentage_reduced samples, only use non-built points from verified points
+            Subset_verified_sample  = Make_Sample_Classification.Step_1_Subset_sample(Verified_sample,pct)
+            Subset_village_sample   = Make_Sample_Classification.Step_1_Subset_sample(Village_sample,pct)
+
             # Merge Verified_points with Zone_points
-            Verified_merge_Zone = Subset_zone_sample.merge(Verified_sample)
-            Band_combo          = Make_Sample_Classification.Step_2_Create_Band_Combo(Verified_merge_Zone)
+            Sample_merge = Subset_verified_sample.merge(Subset_village_sample)
+
+            # Get the band_combo names
+            Band_combo   = Make_Sample_Classification.Step_2_Create_Band_Combo(Sample_merge)
 
             for combo in Band_combo:
-                Accuracy_instance = Make_Sample_Classification.Step_3_Create_Classification_Instance(year,Verified_merge_Zone,combo,tree_num,pct) 
-                Combo_instance.update(Accuracy_instance)
+                Accuracy_instance = Make_Sample_Classification.\
+                                    Step_3_Create_Classification_Instance(year,Sample_merge,
+                                                                          combo,tree_num,
+                                                                          pct,classificaiton_func = Classification ) 
+                Combo_instance_with_village.update(Accuracy_instance)
     
     '''
     
