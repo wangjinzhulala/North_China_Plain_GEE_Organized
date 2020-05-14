@@ -113,6 +113,7 @@ class Classification:
                       Input_img     = None,
                       Input_band    = None,
                       Tree_num      = 100,
+                      seed          = 101,
                       Zone_sample   = None,
                       classProperty = 'Built'):
         
@@ -128,8 +129,8 @@ class Classification:
         Verified_point_non_Built =  self.Verified_point_all.filterMetadata(classProperty,'equals',0)
 
         # 70/30 Train/Test split on built/non-built points.
-        Verified_built_pts_randomcolumn     = Verified_point_Built                                              .randomColumn(columnName = 'random',seed = 101) 
-        Verified_non_built_pts_randomcolumn = Verified_point_non_Built                                              .randomColumn(columnName = 'random',seed = 101)
+        Verified_built_pts_randomcolumn     = Verified_point_Built                                              .randomColumn(columnName = 'random',seed = seed) 
+        Verified_non_built_pts_randomcolumn = Verified_point_non_Built                                              .randomColumn(columnName = 'random',seed = seed)
 
 
         Vetified_built_pts_train     = Verified_built_pts_randomcolumn                                       .filterMetadata('random',"greater_than",0.3)
