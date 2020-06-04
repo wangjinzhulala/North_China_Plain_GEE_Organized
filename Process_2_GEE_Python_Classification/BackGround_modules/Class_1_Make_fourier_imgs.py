@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[1]:
 
 
 import ee
@@ -14,7 +14,7 @@ import numpy as np
 import seaborn as sns
 
 
-# In[4]:
+# In[2]:
 
 
 ee.Initialize()
@@ -26,7 +26,7 @@ ee.Initialize()
 
 
 
-# In[29]:
+# In[1]:
 
 
 class Make_Fourier:
@@ -52,10 +52,12 @@ class Make_Fourier:
     
     #____________OUT_PUT______________
     
-    # get the Fourier img.
+    # get the Fourier img. the Fourier img has been converted to integer
+    # using -->multiply(1000).toInt16()
     Fourier_img = test.harmonicTrendCoefficients
     
-    # get the Residule img.
+    # get the Residule img.the Residule_img img has been converted to integer
+    # using -->multiply(1000).toInt16()
     Residule_img = test.harmonicTrendResidule
     
     # get discrete original/fitted Normalized value
