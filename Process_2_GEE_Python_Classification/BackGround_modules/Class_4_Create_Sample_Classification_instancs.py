@@ -21,7 +21,7 @@ ee.Initialize()
 
 
 
-# In[18]:
+# In[2]:
 
 
 class Make_Sample_Classification():
@@ -120,6 +120,12 @@ class Make_Sample_Classification():
         # get the Mean_Normalized band
         Mean_re         = re.compile(r'^Mean')
         Mean_Normalized = list(filter(Mean_re.match,bands))
+        
+        # get the Climate band
+        Climate_band = ['lrad','prec','pres','shum','srad','temp','wind']
+        
+        # get the Terrain band
+        Terrain_band = ['DEM','SLOPE']
 
         # ________________________Create sample classification instaces_____________________________
 
@@ -129,7 +135,10 @@ class Make_Sample_Classification():
                             Landsat_band + Fourier_band,
                             Landsat_band + Mean_Normalized,
                             Fourier_band + Mean_Normalized,
-                            Landsat_band + Fourier_band + Mean_Normalized]
+                            Landsat_band + Fourier_band + Mean_Normalized,
+                            Landsat_band + Fourier_band + Climate_band,
+                            Landsat_band + Fourier_band + Terrain_band,
+                            Landsat_band + Fourier_band + Climate_band + Terrain_band]
 
         # create comno_names
         global combination_name
@@ -138,7 +147,10 @@ class Make_Sample_Classification():
                             'Landsat_Fourier',
                             'Landsat_Mean',
                             'Fourier_Mean',
-                            'Landsat_Fourier_Mean']
+                            'Landsat_Fourier_Mean',
+                            'Landsat_Fourier_Climate',
+                            'Landsat_Fourier_Terrain',
+                            'Landsat_Fourier_Terrain_Climate']
 
 
         return list(zip(combination_name,band_combination))
