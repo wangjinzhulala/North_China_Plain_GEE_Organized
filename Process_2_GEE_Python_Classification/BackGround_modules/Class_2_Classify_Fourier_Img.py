@@ -19,7 +19,7 @@ ee.Initialize()
 
 
 
-# In[3]:
+# In[1]:
 
 
 class Classification:
@@ -42,7 +42,9 @@ class Classification:
     3) the [Input_band] defines the bands that are used in the classification
     4) the [Verified_point] defines the sample points as the ground truthes,
     5) the [Input_band] is used to restrain feature points (by feature.Select()),
-    6) the [classProperty] is default to 'Built', which is the column name for ground truth
+    6) the [seed] determines the random state of the training point, default to be 101,
+    7) the [split_portion] determines how to perform trian/test split, training points are theose > split_portion,
+    6) the [classProperty] is default to 'Built', which is the column name for ground truth,
     7) The default [Tree_num] is 100.
 
     For {Output}: 
@@ -114,6 +116,7 @@ class Classification:
                       Input_band    = None,
                       Tree_num      = 100,
                       seed          = 101,
+                      split_portion = 0.3,
                       Zone_sample   = None,
                       classProperty = 'Built'):
         
@@ -133,11 +136,11 @@ class Classification:
         Verified_non_built_pts_randomcolumn = Verified_point_non_Built                                              .randomColumn(columnName = 'random',seed = seed)
 
 
-        Vetified_built_pts_train     = Verified_built_pts_randomcolumn                                       .filterMetadata('random',"greater_than",0.3)
-        Vetified_built_pts_test      = Verified_built_pts_randomcolumn                                       .filterMetadata('random',"not_greater_than",0.3) 
+        Vetified_built_pts_train     = Verified_built_pts_randomcolumn                                       .filterMetadata('random',"greater_than",split_portion)
+        Vetified_built_pts_test      = Verified_built_pts_randomcolumn                                       .filterMetadata('random',"not_greater_than",split_portion) 
 
-        Vetified_non_built_pts_train = Verified_non_built_pts_randomcolumn                                      .filterMetadata('random','greater_than',0.3)
-        Vetified_non_built_pts_test  = Verified_non_built_pts_randomcolumn                                      .filterMetadata('random','not_greater_than',0.3) 
+        Vetified_non_built_pts_train = Verified_non_built_pts_randomcolumn                                      .filterMetadata('random','greater_than',split_portion)
+        Vetified_non_built_pts_test  = Verified_non_built_pts_randomcolumn                                      .filterMetadata('random','not_greater_than',split_portion) 
 
         # Merge train/test datasets respectively.
         if Zone_sample != None:
