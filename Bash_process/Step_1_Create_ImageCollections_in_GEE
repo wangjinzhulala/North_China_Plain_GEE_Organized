@@ -3,6 +3,6 @@
 for i in {1990..2018..3}
 do
         end_year=`expr $i + 2`
-        earthengine --no-use_cloud_api create collection users/Jinzhu_Deakin/North_China_Plain/Classified_img/NDBI_gte_5_$i"_"$end_year
+        earthengine --no-use_cloud_api create collection users/Jinzhu_Deakin/North_China_Plain/Classified_img/Re_Inspect_Sample_2019_Landsat_$i"_"$end_year
         echo ImageCollection of $i $end_year has created!
 done
