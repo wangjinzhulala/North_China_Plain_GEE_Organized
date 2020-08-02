@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[138]:
+# In[1]:
 
 
 import ee
@@ -29,7 +29,7 @@ from subprocess import PIPE
 
 
 
-# In[113]:
+# In[2]:
 
 
 ee.Initialize()
@@ -41,7 +41,7 @@ ee.Initialize()
 
 
 
-# In[160]:
+# In[31]:
 
 
 class Temporal_consistency_check:
@@ -50,7 +50,7 @@ class Temporal_consistency_check:
     is that "conversion from built to non-built hardly happens". So, given a pixel in a series
     of classified images, if this pixel is a built-up pixel at start time, and remain as a 
     more than half of times in the next periods, we then confirm this pixel is a built-up 
-    pixeal, otherwise change it to a non-built pixel.
+    pixel, otherwise change it to a non-built pixel.
     
     ________________________________A General Description__________________________________
     
@@ -86,32 +86,33 @@ class Temporal_consistency_check:
  
     # define the names of each period
     year_range = list(f'{i[0]}_{i[1]}' for i in zip(range(1990,2018,3),range(1992,2020,3)))
-    
+
     # get the classified_random_imgs and sum them up for each period
     Classified_Landsat_1990_2019 = [ee.ImageCollection(f"users/wangjinzhulala/North_China_Plain_Python/classification_img/Control_{year}")
                                       .sum().gte(8).set('name',year)   for year in year_range]
-                                      
+
     Classified_Sentinel_2014_2019 = [ee.ImageCollection(f"users/wangjinzhulala/North_China_Plain_Python/classification_img/Sentinel_Landsat_{year}")
                                       .sum().gte(8).set('name',year)   for year in year_range[-2:]]
 
     # combine classification img together
     Classified_imgs = Classified_Landsat_1990_2019[:-2] + Classified_Sentinel_2014_2019
-    
+
     # get the temporal checked imgs
-    Iter_temporal_check_instaces = Temporal_consistency_check(Classified_imgs,6,10).Iterate_the_check()
-    
+    Iter_temporal_check_instaces = Temporal_consistency_check(Classified_imgs,3,5).Iterate_the_check(mode = 'only_forward')
+
     # visulize the maps
     Map = geemap.Map()
     Map.setCenter(115.4508, 35.2492,10)
 
-    year_idx = 4
+    year_idx = 2
 
     Map.add_basemap('HYBRID')
     Map.addLayer(Classified_imgs[year_idx] ,{'min':0,'max':1},'origin')
-    Map.addLayer(Iter_temporal_check_instaces[0][year_idx] ,{'min':0,'max':1},'Iter_0')
     Map.addLayer(Iter_temporal_check_instaces[1][year_idx] ,{'min':0,'max':1},'Iter_1')
     Map.addLayer(Iter_temporal_check_instaces[2][year_idx] ,{'min':0,'max':1},'Iter_2')
     Map.addLayer(Iter_temporal_check_instaces[3][year_idx] ,{'min':0,'max':1},'Iter_3')
+    Map.addLayer(Iter_temporal_check_instaces[4][year_idx] ,{'min':0,'max':1},'Iter_4')
+    Map.addLayer(Iter_temporal_check_instaces[5][year_idx] ,{'min':0,'max':1},'Iter_5')
 
     Map
     
@@ -129,9 +130,12 @@ class Temporal_consistency_check:
         self.Check_threshold = Check_len + math.ceil((len(self.Check_wieght) - 1)/2)
         
         # print out the check parameters
+        print('================  Check Report  ================')
         print(f'Check length is    ---> {self.Check_len}')
-        print(f'Check weights is   ---> {self.Check_wieght}')
+        print(f'Check weights are  ---> {self.Check_wieght}')
         print(f'Check threshold is ---> {self.Check_threshold}')
+        print(f'Check iteration is ---> {self.iteration_num}')
+        print('================================================')
     
  
 
@@ -177,17 +181,34 @@ class Temporal_consistency_check:
 
 
 
-
-
-    def Forward_backward(self,temporal_check_len,in_imgs):
-
+    def Forward(self,temporal_check_len,in_imgs):
+        
         # because temporal check can not been conducted at the edge, so we define an index-range to those
         # img that can be checked in the process
         img_idx_for_temporal_check = range(len(in_imgs) - temporal_check_len + 1)
 
+        # slice the forward_input_tifs into chunks with the length of temporal_check_len
+        forward_chunks  = [in_imgs[i:i + temporal_check_len] for i in img_idx_for_temporal_check]
 
-        #_______________________________Backward temporal check________________________________________________
+        # perform the forward temporal check
+        forward_tif     = [self.Temporal_check('forward',chunk,self.Check_wieght) 
+                           for chunk in forward_chunks]
+        
+        # add the imgs of the edge to checked list, so we get a full img list 
+        forward_checked = forward_tif + in_imgs[-temporal_check_len + 1:]
 
+        return forward_checked
+    
+    
+    
+    
+
+    def Backward(self,temporal_check_len,in_imgs):
+
+        # because temporal check can not been conducted at the edge, so we define an index-range to those
+        # img that can be checked in the process
+        img_idx_for_temporal_check = range(len(in_imgs) - temporal_check_len + 1)
+        
         # because this is backward check, so first reverse the img order
         reverse_classified_tifs = in_imgs[::-1]
 
@@ -197,61 +218,177 @@ class Temporal_consistency_check:
         # perform the backward temporal check
         backward_tif    = [self.Temporal_check('backward',chunk,self.Check_wieght) 
                            for chunk in backward_chunks]
+        
+        # add the edge tifs to backward_tif and return the result
+        backward_checked = in_imgs[:temporal_check_len-1] + backward_tif[::-1]
+        
+        return backward_checked
+    
+    
+    
+    
 
 
-
-        #_______________________________Forward temporal check________________________________________________
-
-        # because the backward_tif are in reversed (descending) order, so reverse it back
-        backward_tif_ascending = backward_tif[::-1]
-
-        # add the imgs not been checked at the backward process,so we get a full-length img list for forward check    
-        forward_input_tifs = in_imgs[:temporal_check_len] + backward_tif_ascending
-
-        # slice the forward_input_tifs into chunks with the length of temporal_check_len
-        forward_chunks  = [forward_input_tifs[i:i + temporal_check_len] for i in img_idx_for_temporal_check]
-
-        # perform the forward temporal check
-        forward_tif     = [self.Temporal_check('forward',chunk,self.Check_wieght) 
-                           for chunk in forward_chunks]
-
-
-        #___________________________Add Forward & Backward checked img together___________________________________
-
-        # add the imgs not been checked at the forward process,so we get a completed img list  
-        backward_forward = forward_tif + backward_tif_ascending[-(temporal_check_len - 1) :]
-
-        return backward_forward
-
-    def Iterate_the_check(self):
+    def Iterate_the_check(self,mode = 'only_forward'):
         
                       
         # Here iterate Check_iteration_num times and 
         Iter_temporal_check_instaces = {}
-
         
-        for it in range(self.iteration_num):
+        for it in range(1,self.iteration_num+1):
+            
+            #_______________________________here defines what happens in 'back_forward' mode_____________________________
+            if mode == 'backward_forward':
+            
+                if it == 1:
 
-            if it == 0:
+                    # first proceed the backward check, then the forward check
+                    backward_checked  = self.Backward(self.Check_len,self.classified_imgs)
+                    temporal_checked  = self.Forward(self.Check_len,backward_checked)
+                    
+                    # write the iteration number to the img attribute
+                    check_with_iteration = [ee.Image(img).set('iteration',it) for img in temporal_checked]
+                    
+                    # put the first iteration into result dictionary
+                    Iter_temporal_check_instaces[1]  = check_with_iteration
 
-                forward_backward_checked =  self.Forward_backward(self.Check_len,self.classified_imgs)
-                forward_backward_with_iteration = [ee.Image(img).set('iteration',it) for img in forward_backward_checked]
 
-                Iter_temporal_check_instaces[0]  = forward_backward_with_iteration
+                else:
+
+                    in_imgs = Iter_temporal_check_instaces[it-1]
+
+                    # first proceed the backward check, then the forward check
+                    backward_checked  = self.Backward(self.Check_len,in_imgs)
+                    temporal_checked  = self.Forward(self.Check_len,backward_checked)
+                    
+                    # write the iteration number to the img attribute
+                    check_with_iteration = [ee.Image(img).set('iteration',it) for img in temporal_checked]
+
+                    Iter_temporal_check_instaces[it]  = check_with_iteration
+                    
+                    
+            #______________________________here defines what happens in 'forward_backward' mode______________________________
+            elif mode == 'forward_backward':
+            
+                if it == 1:
+
+                    # first proceed the backward check, then the forward check
+                    forward_checked   = self.Forward(self.Check_len,self.classified_imgs)
+                    temporal_checked  = self.Backward(self.Check_len,forward_checked)
+                    
+                    # write the iteration number to the img attribute
+                    check_with_iteration = [ee.Image(img).set('iteration',it) for img in temporal_checked]
+                    
+                    # put the first iteration into result dictionary
+                    Iter_temporal_check_instaces[1]  = check_with_iteration
 
 
+                else:
+
+                    in_imgs = Iter_temporal_check_instaces[it-1]
+
+                    # first proceed the backward check, then the forward check
+                    forward_checked   = self.Forward(self.Check_len,in_imgs)
+                    temporal_checked  = self.Backward(self.Check_len,forward_checked)
+                    
+                    # write the iteration number to the img attribute
+                    check_with_iteration = [ee.Image(img).set('iteration',it) for img in temporal_checked]
+
+                    Iter_temporal_check_instaces[it]  = check_with_iteration
+                    
+            #__________________________here defines what happens in 'only_forward' mode_________________________________
+            elif mode == 'only_forward':
+            
+                if it == 1:
+
+                    # first proceed the backward check, then the forward check
+                    temporal_checked   = self.Forward(self.Check_len,self.classified_imgs)
+                    
+                    # write the iteration number to the img attribute
+                    check_with_iteration = [ee.Image(img).set('iteration',it) for img in temporal_checked]
+                    
+                    # put the first iteration into result dictionary
+                    Iter_temporal_check_instaces[1]  = check_with_iteration
+
+
+                else:
+
+                    in_imgs = Iter_temporal_check_instaces[it-1]
+
+                    # first proceed the backward check, then the forward check
+                    temporal_checked = self.Forward(self.Check_len,in_imgs)
+                    
+                    # write the iteration number to the img attribute
+                    check_with_iteration = [ee.Image(img).set('iteration',it) for img in temporal_checked]
+
+                    Iter_temporal_check_instaces[it]  = check_with_iteration
+                    
+            #___________________________here defines what happens in 'only_backward' mode_________________________________
+            elif mode == 'only_backward':
+            
+                if it == 1:
+
+                    # first proceed the backward check, then the forward check
+                    temporal_checked   = self.Backward(self.Check_len,self.classified_imgs)
+                    
+                    # write the iteration number to the img attribute
+                    check_with_iteration = [ee.Image(img).set('iteration',it) for img in temporal_checked]
+                    
+                    # put the first iteration into result dictionary
+                    Iter_temporal_check_instaces[1]  = check_with_iteration
+
+
+                else:
+
+                    in_imgs = Iter_temporal_check_instaces[it-1]
+
+                    # first proceed the backward check, then the forward check
+                    temporal_checked = self.Backward(self.Check_len,in_imgs)
+                    
+                    # write the iteration number to the img attribute
+                    check_with_iteration = [ee.Image(img).set('iteration',it) for img in temporal_checked]
+
+                    Iter_temporal_check_instaces[it]  = check_with_iteration
+                    
+            # in case given an incorrect mode        
             else:
-
-                in_imgs = Iter_temporal_check_instaces[it-1]
-
-                forward_backward_checked =  self.Forward_backward(self.Check_len,self.classified_imgs)
-                forward_backward_with_iteration = [ee.Image(img).set('iteration',it) for img in forward_backward_checked]
-
-                Iter_temporal_check_instaces[it]  = forward_backward_with_iteration
-
+                print("Please provide a correct mode ['only_backward'|'only_forward'|'forward_backward'|'backward_forward']")
+                    
+                    
+        # here add the checked imgs to the class attribute, and return it
         self.Iter_temporal_check_instaces = Iter_temporal_check_instaces
         
         return self.Iter_temporal_check_instaces
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
