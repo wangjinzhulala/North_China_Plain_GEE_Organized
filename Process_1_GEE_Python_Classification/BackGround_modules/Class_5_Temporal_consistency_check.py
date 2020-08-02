@@ -41,7 +41,7 @@ ee.Initialize()
 
 
 
-# In[31]:
+# In[37]:
 
 
 class Temporal_consistency_check:
@@ -141,13 +141,8 @@ class Temporal_consistency_check:
 
     def Temporal_check(self,mode,in_tifs,weights):
 
-        # get the name of the first img as the property for return img
-        name = ee.Image(in_tifs[0]).get('name')
-
         # zip classified_random_sum with weights
         img_multiply = list(zip(in_tifs,self.Check_wieght))
-
-
 
         if mode == 'forward':
 
@@ -156,7 +151,7 @@ class Temporal_consistency_check:
             sum_tif = ee.ImageCollection([i[0].multiply(i[1]) for i in img_multiply]).sum()
 
             # thoes pixel that GREATE THAN OR EQUALS are built-up pixel
-            temporal_checked = sum_tif.gte(self.Check_threshold).set('name',name)
+            temporal_checked = sum_tif.gte(self.Check_threshold)
 
         elif mode == 'backward':
 
@@ -231,6 +226,19 @@ class Temporal_consistency_check:
 
     def Iterate_the_check(self,mode = 'only_forward'):
         
+        '''Here are there mode ==> 'only_backward'|'only_forward'|'forward_backward'|'backward_forward'
+        
+        The defalt mode is only_forward, which means only correct pixel 
+        that were incorrecly classified as "built" to "non-built"
+        
+        1) 'only_backward' ==> slide a moving window from end year to start year (backward)
+            and correct the pixel that are incorrecly classified as "non-built" to "built"
+        2) 'only_forward' ==> slide a moving window from the start year to end year (forward)
+            and correct the pixel that are incorrecly classified as "built" to "non-built"
+        3) 'forward_backward' ==> first slide the 'only_backward' then the 'only_forward'
+        4) 'forward_backward' ==> first slide the 'only_forward' then the 'only_backward'
+        
+        '''
                       
         # Here iterate Check_iteration_num times and 
         Iter_temporal_check_instaces = {}
@@ -359,12 +367,6 @@ class Temporal_consistency_check:
         self.Iter_temporal_check_instaces = Iter_temporal_check_instaces
         
         return self.Iter_temporal_check_instaces
-
-
-# In[ ]:
-
-
-
 
 
 # In[ ]:
