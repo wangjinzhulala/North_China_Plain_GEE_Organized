@@ -25,4 +25,22 @@ data.p_6_grid_acc %>%
   stat_summary(fun.data = 'mean_se',geom = 'ribbon',alpha = 1/3,size=0.1,color='grey99')
 
 
+# read data, using pate to concat long file path string
+data.p_6_sample_size = read.csv(paste("../../Process_1_GEE_Python_Classification/",
+                                   "Sub_Process_6_Before_classification_Feature_selection/",
+                                   "Result/",
+                                   "Sample_size_acc.csv",sep=""),
+                             stringsAsFactors = T)
+
+# filter the accuracy from test and make plot
+data.p_6_sample_size %>% 
+  filter(Acc_type == 'acc_test') %>% 
+  group_by(Size) %>% 
+  ggplot(aes(x=Size,y=Acc_value)) +
+  stat_summary(fun = 'mean',geom='line',color = '#3081BA')+
+  stat_summary(fun.data = 'mean_se',geom = 'ribbon',alpha = 1/3, fill = '#3081BA')
+
+
+
+
 
