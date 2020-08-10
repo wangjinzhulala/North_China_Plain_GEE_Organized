@@ -17,7 +17,9 @@ data.area_change = read.csv(paste("../../Process_2_Temporal_Check/",
 # make plot
 data.area_change %>% 
   ggplot(aes(x=year_range,y=count,color=type,group=type)) +
-  geom_line()
+  geom_line() +
+  labs(x='Year Range',y = 'Pixel Count') +
+  theme(axis.text.x = element_text(angle = 20,vjust = 0.4)) 
 
 
 

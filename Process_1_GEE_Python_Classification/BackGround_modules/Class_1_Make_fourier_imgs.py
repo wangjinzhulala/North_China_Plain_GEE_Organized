@@ -53,11 +53,11 @@ class Make_Fourier:
     #____________OUT_PUT______________
     
     # get the Fourier img. the Fourier img has been converted to integer
-    # using -->multiply(1000).toInt16()
+    # by -->multiply(1000).toInt16()
     Fourier_img = test.harmonicTrendCoefficients
     
     # get the Residule img.the Residule_img img has been converted to integer
-    # using -->multiply(1000).toInt16()
+    # by -->multiply(1000).toInt16()
     Residule_img = test.harmonicTrendResidule
     
     # get discrete original/fitted Normalized value
@@ -189,7 +189,7 @@ class Make_Fourier:
 
             # Using linearRgression to perform the Fourier Transformation
             # The output of the regression reduction is a [(n+2) x 1] array image, where n is harmonics.
-            harmonicTrend = self.harmonicLandsat.select(ee.List(self.sinuate_and_constant).add(dependent))                     .reduce(ee.Reducer.linearRegression(ee.List(self.sinuate_and_constant).length(), 1)) 
+            harmonicTrend = self.harmonicLandsat.select(ee.List(self.sinuate_and_constant).add(dependent))                                 .reduce(ee.Reducer.linearRegression(ee.List(self.sinuate_and_constant).length(), 1)) 
 
             # Turn the array image into a multi-band image of coefficients.
             # 1) get the coefficients
