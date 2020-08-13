@@ -28,9 +28,9 @@ data.original_fitted %>%
   group_by(Type) %>% 
   ggplot(aes(x=time,y=val,color=Type)) +
   geom_line() +
-  facet_wrap(.~Index,nrow = 3,scale='free') +
+  facet_grid(Index~.,scale='free') +
   scale_x_date(minor_breaks = '1 month',
                breaks =  seq(as.Date("2017-01-01"), as.Date("2020-01-01"), by="6 months"), 
                date_labels = "%b\n%Y") +
-  labs(y= 'Value')
+  labs(x='Date',y= 'Value')
 

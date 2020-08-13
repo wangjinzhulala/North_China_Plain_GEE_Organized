@@ -11,16 +11,17 @@ data.p_6_grid_acc = read.csv(paste("../../Process_1_GEE_Python_Classification/",
                                     "Grid_acc_tree.csv",sep=""),
                               stringsAsFactors = T)
 
-
+# make plots to show Tree~Accuracy
 data.p_6_grid_acc %>% 
   filter(In_Bands == 'Spectrum_Normalize_Fourier_Terrain_Meterology') %>% 
   ggplot(aes(x=Tree,y=Accuracy)) +
   stat_summary(fun = 'mean',geom = 'line',color = '#3081BA') +
   stat_summary(fun.data = 'mean_se',geom = 'ribbon',alpha = 1/3, fill = '#3081BA')
 
-
+# plot of Bands~Accuracy
 data.p_6_grid_acc %>% 
-  ggplot(aes(x=Tree,y=Accuracy,group=In_Bands,color=In_Bands,fill=In_Bands)) +
+  filter(Tree==100) %>% 
+  ggplot(aes(x=Year,y=Accuracy,group=In_Bands,color=In_Bands,fill=In_Bands)) +
   stat_summary(fun = 'mean',geom = 'line') +
   stat_summary(fun.data = 'mean_se',geom = 'ribbon',alpha = 1/3,size=0.1,color='grey99')
 

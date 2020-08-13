@@ -43,3 +43,17 @@ data.sentinel %>%
   scale_x_continuous(breaks = seq(2015,2019,1),minor_breaks = seq(2015,2019,1)) +
   scale_y_continuous(breaks = seq(1,12),minor_breaks = 1) +
   scale_fill_binned()
+
+
+
+
+
+
+
+
+
+
+
+
+
+

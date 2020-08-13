@@ -89,38 +89,57 @@ data.temporal_1 = read.csv(paste("../../Process_2_Temporal_Check/",
 
 #_____________________________ make figures ________________________
 data.temporal_1  %>% 
-  ggplot(aes(x=Mode,y=Accuracy))+
-  geom_boxplot()
-
-
-data.temporal_1  %>% 
+  filter(Mode == 'only_forward') %>% 
   ggplot(aes(x=Iteration,y=Accuracy))+
   stat_summary(fun = 'mean',geom = 'line',color='#4990C2') +
-  stat_summary(fun.data = 'mean_se',geom = 'ribbon',alpha=1/5,fill='#4990C2')
+  stat_summary(fun.data = 'mean_se',geom = 'ribbon',alpha=1/5,fill='#4990C2') +
+  scale_x_continuous(breaks = seq(1,10))
 
-data.temporal_1  %>% 
+data.temporal_1 %>% 
+  filter(Mode == 'only_forward', 
+         Iteration == 9) %>% 
   ggplot(aes(x=Window,y=Accuracy))+
   stat_summary(fun = 'mean',geom = 'line',color='#4990C2') +
-  stat_summary(fun.data = 'mean_se',geom = 'ribbon',alpha=1/5,fill='#4990C2')
+  stat_summary(fun.data = 'mean_se',geom = 'ribbon',alpha=1/5,fill='#4990C2')+
+  scale_x_continuous(breaks = seq(2,6))
+
 
 #______________Make the plot comparing original/10-folds/temporal-corrected accuracy________________
+
+data.tempral_filter = data.temporal_1 %>% 
+  filter(Window == 3,
+         Iteration == 9,
+         Mode == 'only_forward')
 
 
 data.p_8 %>% 
   filter(Threshold == 5)   %>% 
-  ######## Original accuracy
-  ggplot(aes(x=year_range,y=Accuracy,group='Corrected')) +
-  geom_line() +
   ######## 10-folds correction accuracy
-  stat_summary(data = data.p_7,mapping = aes(x=year_range,y=Overall_ACC),
-               fun.data  = 'mean_se',geom= 'ribbon',alpha = 1/5,fill = '#3081BA',color='grey95') +
-  stat_summary(data = data.p_7,mapping = aes(x=year_range,y=Overall_ACC,group = 'Original'),
-               fun = 'mean',geom= 'line',color = '#3081BA') +
+  ggplot(aes(x=year_range,
+             y=Accuracy,
+             group='10-folds corrections',
+             color = '10-folds corrections')) +
+  geom_line() +
+  ######## Original accuracy
+  stat_summary(data = data.p_7,
+               mapping = aes(x=year_range, y=Overall_ACC),
+               fun.data  = 'mean_se',
+               geom= 'ribbon',
+               alpha = 1/10,
+               color = 'grey95',
+               fill = "#FF9D47") +
+  stat_summary(data = data.p_7,
+               mapping = aes(x=year_range,y=Overall_ACC,color = 'Original'),
+               fun = 'mean',
+               geom= 'line') +
   ######## temporal correction accuracy
-  stat_summary(data = data.temporal_1,mapping = aes(x=year,y=Accuracy),
-               fun.data  = 'mean_se',geom= 'ribbon',alpha = 1/5,fill = '#FF9538',color='grey95') +
-  stat_summary(data = data.temporal_1,mapping = aes(x=year,y=Accuracy,group = 'Corrected'),
-               fun = 'mean',geom= 'line',color = '#FF9538') +
+  geom_line(data = data.tempral_filter,
+            mapping = aes(x=year,y=Accuracy,color = 'Temporal'))  +
+  scale_color_manual(name="", values = c("#3282BA","#FF9D47","#3DA83D")) +
   labs(x='Year Range') +
-  theme(axis.text.x = element_text(angle = 18,vjust = 0.4))
+  theme(axis.text.x = element_text(angle = 18,vjust = 0.6))
+
+
+
+
 

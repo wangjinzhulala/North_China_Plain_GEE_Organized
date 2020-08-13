@@ -20,10 +20,11 @@ data.p_1_1 = data.p_1_1 %>%
 
 
 # make a boxplot of Harmonic~Mean_Err (650*400)
-data.p_1_1 %>% 
+p_harmonic = data.p_1_1 %>% 
   ggplot(aes(x=Harmonic,y=Mean_Err)) +
   geom_boxplot()+
-  ylab('Mean Error')
+  ylab('Mean Error')+
+  xlab('Harmonic numbers')
 
 
 # make a boxplot of Harmonic~Mean_Err wraped by Sensor~Index (650*800)
@@ -31,7 +32,24 @@ data.p_1_1 %>%
   ggplot(aes(x=Harmonic,y=Mean_Err)) +
   geom_boxplot()+
   facet_wrap(Sensor~Index,scales = 'free') +
-  ylab('Mean Error')
+  ylab('Mean Error')+
+  xlab('Harmonic numbers')
+
+# make a boxplot of Span~Mean_Err (650*400)
+p_span = data.p_1_1 %>% 
+  filter(Harmonic==3) %>% 
+  ggplot(aes(x=Span,y=Mean_Err)) +
+  geom_boxplot()+
+  ylab('Mean Error')+
+  xlab('Stack Years')
+
+plot_grid(p_harmonic,
+          p_span + theme(axis.title.y = element_blank()),
+          nrow = 1,
+          rel_widths = c(5.5,5),
+          labels = c('a)','b)'),
+          label_size = 12,
+          label_fontface = 'plain')
 
 
 
