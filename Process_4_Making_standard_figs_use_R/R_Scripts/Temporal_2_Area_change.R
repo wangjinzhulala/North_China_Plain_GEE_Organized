@@ -16,11 +16,12 @@ data.area_change = read.csv(paste("../../Process_2_Temporal_Check/",
 
 # make plot
 data.area_change %>% 
-  ggplot(aes(x=year_range,y=count,color=type,group=type)) +
+  filter(Type == 'My') %>% 
+  ggplot(aes(x=year,y=sum,color=EN_Name,group=EN_Name)) +
   geom_line() +
+  scale_color_viridis_d() +
   labs(x='Year Range',y = 'Pixel Count') +
-  theme(axis.text.x = element_text(angle = 20,vjust = 0.4)) 
-
+  theme_bw() 
 
 
 
