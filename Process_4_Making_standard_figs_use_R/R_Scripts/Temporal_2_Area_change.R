@@ -18,8 +18,8 @@ data.area_change = read.csv(paste("../../Process_2_Temporal_Check/",
 data.area_change %>% 
   filter(Type == 'My') %>% 
   ggplot(aes(x=year,y=sum,color=EN_Name,group=EN_Name)) +
-  geom_line() +
-  scale_color_viridis_d() +
+  geom_line(size=1) +
+  scale_color_discrete() +
   labs(x='Year Range',y = 'Pixel Count') +
   theme_bw() 
 

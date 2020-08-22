@@ -72,7 +72,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1909,96.41414141414144
+})",1980,1909,96.41414141414143
 1990_1992,1,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -220,7 +220,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1930,97.47474747474749
+})",1980,1930,97.47474747474747
 1990_1992,3,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -368,7 +368,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1944,98.1818181818182
+})",1980,1944,98.18181818181819
 1990_1992,5,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -590,7 +590,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1917,96.8181818181818
+})",1980,1917,96.81818181818181
 1990_1992,8,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -664,7 +664,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1901,96.010101010101
+})",1980,1901,96.01010101010101
 1990_1992,9,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -812,7 +812,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1901,96.010101010101
+})",1980,1901,96.01010101010101
 1993_1995,1,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -960,7 +960,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1924,97.17171717171719
+})",1980,1924,97.17171717171718
 1993_1995,3,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -1034,7 +1034,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1930,97.47474747474749
+})",1980,1930,97.47474747474747
 1993_1995,4,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -1182,7 +1182,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1934,97.6767676767677
+})",1980,1934,97.67676767676767
 1993_1995,6,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -1256,7 +1256,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1927,97.3232323232323
+})",1980,1927,97.32323232323232
 1993_1995,7,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -1478,7 +1478,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1885,95.20202020202021
+})",1980,1885,95.2020202020202
 1996_1998,0,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -1552,7 +1552,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1894,95.65656565656565
+})",1980,1894,95.65656565656566
 1996_1998,1,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -1626,7 +1626,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1906,96.26262626262627
+})",1980,1906,96.26262626262626
 1996_1998,2,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -1700,7 +1700,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1915,96.71717171717172
+})",1980,1915,96.71717171717171
 1996_1998,3,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -1774,7 +1774,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1920,96.96969696969695
+})",1980,1920,96.96969696969697
 1996_1998,4,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -1922,7 +1922,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1924,97.17171717171719
+})",1980,1924,97.17171717171718
 1996_1998,6,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -1996,7 +1996,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1917,96.8181818181818
+})",1980,1917,96.81818181818181
 1996_1998,7,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -2070,7 +2070,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1909,96.41414141414144
+})",1980,1909,96.41414141414143
 1996_1998,8,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -2144,7 +2144,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1904,96.16161616161615
+})",1980,1904,96.16161616161617
 1996_1998,9,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -2218,7 +2218,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1885,95.20202020202021
+})",1980,1885,95.2020202020202
 1999_2001,0,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -2292,7 +2292,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1894,95.65656565656565
+})",1980,1894,95.65656565656566
 1999_2001,1,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -2514,7 +2514,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1924,97.17171717171719
+})",1980,1924,97.17171717171718
 1999_2001,4,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -2588,7 +2588,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1928,97.37373737373737
+})",1980,1928,97.37373737373738
 1999_2001,5,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -2736,7 +2736,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1917,96.8181818181818
+})",1980,1917,96.81818181818181
 1999_2001,7,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -2810,7 +2810,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1900,95.95959595959594
+})",1980,1900,95.95959595959596
 1999_2001,8,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -2884,7 +2884,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1886,95.25252525252527
+})",1980,1886,95.25252525252526
 1999_2001,9,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -3032,7 +3032,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1896,95.75757575757576
+})",1980,1896,95.75757575757575
 2002_2004,1,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -3180,7 +3180,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1928,97.37373737373737
+})",1980,1928,97.37373737373738
 2002_2004,3,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -3254,7 +3254,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1937,97.82828282828285
+})",1980,1937,97.82828282828284
 2002_2004,4,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -3402,7 +3402,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1934,97.6767676767677
+})",1980,1934,97.67676767676767
 2002_2004,6,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -3476,7 +3476,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1921,97.020202020202
+})",1980,1921,97.02020202020202
 2002_2004,7,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -3624,7 +3624,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1890,95.45454545454544
+})",1980,1890,95.45454545454545
 2002_2004,9,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -3846,7 +3846,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1913,96.61616161616159
+})",1980,1913,96.6161616161616
 2005_2007,2,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -3920,7 +3920,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1921,97.020202020202
+})",1980,1921,97.02020202020202
 2005_2007,3,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -3994,7 +3994,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1930,97.47474747474749
+})",1980,1930,97.47474747474747
 2005_2007,4,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -4068,7 +4068,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1937,97.82828282828285
+})",1980,1937,97.82828282828284
 2005_2007,5,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -4142,7 +4142,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1931,97.52525252525251
+})",1980,1931,97.52525252525253
 2005_2007,6,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -4290,7 +4290,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1907,96.31313131313131
+})",1980,1907,96.31313131313132
 2005_2007,8,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -4364,7 +4364,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1894,95.65656565656565
+})",1980,1894,95.65656565656566
 2005_2007,9,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -4438,7 +4438,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1883,95.10101010101009
+})",1980,1883,95.1010101010101
 2008_2010,0,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -4660,7 +4660,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1910,96.46464646464645
+})",1980,1910,96.46464646464646
 2008_2010,3,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -4882,7 +4882,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1921,97.020202020202
+})",1980,1921,97.02020202020202
 2008_2010,6,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -4956,7 +4956,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1910,96.46464646464645
+})",1980,1910,96.46464646464646
 2008_2010,7,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -5104,7 +5104,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1883,95.10101010101009
+})",1980,1883,95.1010101010101
 2008_2010,9,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -5326,7 +5326,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1893,95.6060606060606
+})",1980,1893,95.60606060606061
 2011_2013,2,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -5400,7 +5400,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1909,96.41414141414144
+})",1980,1909,96.41414141414143
 2011_2013,3,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -5622,7 +5622,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1928,97.37373737373737
+})",1980,1928,97.37373737373738
 2011_2013,6,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -5696,7 +5696,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1917,96.8181818181818
+})",1980,1917,96.81818181818181
 2011_2013,7,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -5770,7 +5770,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1906,96.26262626262627
+})",1980,1906,96.26262626262626
 2011_2013,8,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -5918,7 +5918,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",1980,1861,93.989898989899
+})",1980,1861,93.98989898989899
 2014_2016,0,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -5992,7 +5992,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1930,95.68666336142786
+})",2017,1929,95.63708477937531
 2014_2016,1,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6066,7 +6066,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1940,96.18244918195342
+})",2017,1942,96.2816063460585
 2014_2016,2,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6140,7 +6140,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1946,96.47992067426873
+})",2017,1947,96.52949925632127
 2014_2016,3,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6214,7 +6214,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1942,96.2816063460585
+})",2017,1956,96.97570649479424
 2014_2016,4,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6288,7 +6288,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1942,96.2816063460585
+})",2017,1954,96.87654933068914
 2014_2016,5,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6362,7 +6362,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1942,96.2816063460585
+})",2017,1950,96.67823500247893
 2014_2016,6,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6436,7 +6436,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1932,95.78582052553296
+})",2017,1949,96.62865642042637
 2014_2016,7,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6510,7 +6510,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1931,95.73624194348042
+})",2017,1940,96.1824491819534
 2014_2016,8,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6584,7 +6584,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1923,95.33961328705999
+})",2017,1931,95.73624194348042
 2014_2016,9,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6658,7 +6658,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1896,94.00099157164104
+})",2017,1907,94.54635597421914
 2017_2019,0,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6732,7 +6732,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1904,94.39762022806148
+})",2017,1925,95.4387704511651
 2017_2019,1,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6806,7 +6806,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1911,94.74467030242936
+})",2017,1933,95.83539910758553
 2017_2019,2,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6880,7 +6880,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1915,94.94298463063956
+})",2017,1936,95.98413485374319
 2017_2019,3,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -6954,7 +6954,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1917,95.04214179474468
+})",2017,1946,96.47992067426871
 2017_2019,4,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -7028,7 +7028,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1916,94.99256321269213
+})",2017,1945,96.43034209221616
 2017_2019,5,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -7102,7 +7102,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1914,94.893406048587
+})",2017,1949,96.62865642042637
 2017_2019,6,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -7176,7 +7176,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1916,94.99256321269213
+})",2017,1945,96.43034209221616
 2017_2019,7,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -7250,7 +7250,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1917,95.04214179474468
+})",2017,1940,96.1824491819534
 2017_2019,8,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -7324,7 +7324,7 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1911,94.74467030242936
+})",2017,1928,95.58750619732275
 2017_2019,9,"ee.FeatureCollection({
   ""type"": ""Invocation"",
   ""arguments"": {
@@ -7398,4 +7398,4 @@ Year,Threshold,Feature,Sample_size,Correct_num,Accuracy
     ""scale"": 30
   },
   ""functionName"": ""Image.sampleRegions""
-})",2017,1896,94.00099157164104
+})",2017,1920,95.19087754090233
