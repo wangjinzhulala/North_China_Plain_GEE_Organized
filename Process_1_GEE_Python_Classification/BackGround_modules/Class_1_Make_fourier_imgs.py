@@ -1,20 +1,32 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 import ee
 import datetime
-import folium
 import os
+import itertools
+import sys
+import collections
+
 from pprint import pprint
 import pandas as pd
 import numpy as np
 import seaborn as sns
+import matplotlib.pyplot as plt
+
+import geemap
 
 
-# In[2]:
+# In[ ]:
+
+
+
+
+
+# In[3]:
 
 
 ee.Initialize()
@@ -26,7 +38,7 @@ ee.Initialize()
 
 
 
-# In[1]:
+# In[7]:
 
 
 class Make_Fourier:
@@ -36,71 +48,73 @@ class Make_Fourier:
     1) start_date and end_date is a string like '2017-01-01'.
     2) hamornics = 3
     3) Normalized_Index = ['NDVI','NDBI','EVI']
+    4) area is the research area, which should be a ee.Feature/Collection/Geometry
 
                 
                 
     __________________________An example of how to use this class____________________
     
-    test = Make_Fourier(start_date='2017-01-01',end_date='2019-12-31')
+    test = Make_Fourier(start_date ='2017-01-01',
+                        end_date   ='2019-12-31',
+                        area = ee.FeatureCollection("users/wangjinzhulala/North_China_Plain_Python/Boundary_shp/North_China_Plain_Boundary"))
 
     test.Stp_1_Create_hamonic_names()
     test.Stp_2_Add_harmonics()
     test.Stp_3_Harmonic_fit()
     
-    # Step_4 is not necessary for the analysis.
-    #test.Stp_4_Make_a_figure()
     
     #____________OUT_PUT______________
-    
+
     # get the Fourier img. the Fourier img has been converted to integer
     # by -->multiply(1000).toInt16()
     Fourier_img = test.harmonicTrendCoefficients
-    
+
     # get the Residule img.the Residule_img img has been converted to integer
     # by -->multiply(1000).toInt16()
     Residule_img = test.harmonicTrendResidule
-    
-    # get discrete original/fitted Normalized value
+
+    # get discrete original/fitted Normalized value. The value has been scaled 
+    # by 1000
     # for example
     Original_NDVI_series = test.harmonicLandsat.select(['NDVI'])
     Fitted_NDVI_series   = test.fittedHarmonic['NDVI']
+
+    # get the amplitude_phase img. The value has been scaled 
+    # by 1000
+    Amplitude_Phase_img = test.Amplitude_Phase_img
     ____________________________________________________________________________________
     '''    
    
-    def __init__(self,start_date,end_date,harmonics = 3,Normalized_Index = ['NDVI','NDBI','EVI']):
-        
-        self.start_date = ee.Date(start_date)
-        self.end_date = ee.Date(end_date)
-        self.harmonics = harmonics
-        
-        self.year_name = str(self.start_date.get('Year').getInfo()) + '_' + str(self.end_date.get('Year').getInfo())
+    def __init__(self,start_date,end_date,area = ee.FeatureCollection("users/wangjinzhulala/North_China_Plain_Python/Boundary_shp/North_China_Plain_Boundary"),
+                 harmonics = 3,Normalized_Index = ['NDVI','NDBI','EVI']):
+
+        self.harmonics = harmonics        
+        year_name = start_date[:4] + '_' + end_date[:4]
         self.Normalized_Index = Normalized_Index
         
-        self.North_China_Plain_Boundary = ee.FeatureCollection("users/wangjinzhulala/North_China_Plain_Python/Boundary_shp/North_China_Plain_Boundary")
-        
         #______________________________Condition to define the right landsat img collecion__________________________
-        if self.end_date.get('year').getInfo() <= 2010:
-            self.Landsat_img = ee.ImageCollection("LANDSAT/LT05/C01/T1_TOA")
+        if int(start_date[:4]) <= 2010:
+            Landsat_img = ee.ImageCollection("LANDSAT/LT05/C01/T1_TOA")
             self.ND_formula = {'NDVI':['B4','B3'],
                           'NDBI':['B5','B4'],
                           'EVI':"2.5 * ((b('B4')-b('B3'))*1.0 / (b('B4')*1.0 + 6.0 * b('B3') - 7.5 * b('B1') + 1.0))"}
 
-        elif self.end_date.get('year').getInfo() <= 2013:
-            self.Landsat_img = ee.ImageCollection("LANDSAT/LE07/C01/T1_TOA")
+        elif int(start_date[:4]) <= 2013:
+            Landsat_img = ee.ImageCollection("LANDSAT/LE07/C01/T1_TOA")
             self.ND_formula = {'NDVI':['B4','B3'],
                           'NDBI':['B5','B4'],
                           'EVI':"2.5 * ((b('B4')-b('B3'))*1.0 / (b('B4')*1.0 + 6.0 * b('B3') - 7.5 * b('B1') + 1.0))"}
 
         else:
-            self.Landsat_img = ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA")
+            Landsat_img = ee.ImageCollection("LANDSAT/LC08/C01/T1_TOA")
             self.ND_formula = {'NDVI':['B5','B4'],
                           'NDBI':['B6','B5'],
                           'EVI':"2.5 * ((b('B5')-b('B4'))*1.0 / (b('B5')*1.0 + 6.0 * b('B4') - 7.5 * b('B2') + 1.0))"}
-        #_____________________________________________________________________________________________________________
-        
-        self.Landsat_img_be_analized = self.Landsat_img.filterBounds(self.North_China_Plain_Boundary)                                                  .filterDate(self.start_date,self.end_date)                                                  .map(lambda img: ee.Image(img.clip(self.North_China_Plain_Boundary)))
             
-        print(f'Analyzing the images of {self.year_name}')
+        # get the landsat imgs as raw input data
+        self.Landsat_img_be_analized = Landsat_img.filterBounds(area)                                                  .filterDate(start_date,end_date)                                                  .map(lambda img: ee.Image(img.clip(area)))
+            
+        print(f'Analyzing the images of {year_name}')
     
     
     def Stp_1_Create_hamonic_names(self):
@@ -178,19 +192,28 @@ class Make_Fourier:
         
         harmonicTrendCoefficients_list = []
         residule_list = []
+        
         fittedHarmonic_dict = {}
+        Amplitude_Phase = []
 
         for idx in self.Normalized_Index:
 
-            # Define varibles required in later session.
+            #_____________________Step_1_Define varibles required in later session__________________________
+            
             independents = [s for s in self.Independents_variable_names if idx in s]
             dependent = idx
             fit_name = 'fitted_' + idx
-
+            
+            
+            #_____________________Step_2_Harmonic_Fit__________________________
+            
             # Using linearRgression to perform the Fourier Transformation
             # The output of the regression reduction is a [(n+2) x 1] array image, where n is harmonics.
             harmonicTrend = self.harmonicLandsat.select(ee.List(self.sinuate_and_constant).add(dependent))                                 .reduce(ee.Reducer.linearRegression(ee.List(self.sinuate_and_constant).length(), 1)) 
-
+            
+            
+            #_____________________Step_3_Get_[Coefficients_img]_[fit_img]_and_[residul_img]__________________________
+            
             # Turn the array image into a multi-band image of coefficients.
             # 1) get the coefficients
             harmonicTrendCoefficients = harmonicTrend.select('coefficients').arrayProject([0]).arrayFlatten([independents])
@@ -204,116 +227,48 @@ class Make_Fourier:
             # add the result into list
             residule_list.append(harmonicTrendResidules)
             harmonicTrendCoefficients_list.append(harmonicTrendCoefficients)
+            
+            
+            #_____________________Step_4_Compute_the_Amplitude_and_Phases__________________________
+            
+            # initiate a list to hold each bands from amp/phs
+            amp_phs_list = []
+            
+            # loop throught each cos/sin bands
+            for i in range(1,self.harmonics+1):
+                
+                # get the names
+                cos = f'{idx}_cos_{i}'
+                sin = f'{idx}_cos_{i}'
+                name_amp = f'{idx}_Amplitude_{i}'
+                name_phs = f'{idx}_Phase_{i}'
+                
+                # compute the amplitude and phase
+                amp = harmonicTrendCoefficients.select(cos).hypot(harmonicTrendCoefficients.select(sin)).rename(name_amp)
+                phs = harmonicTrendCoefficients.select(cos).atan2(harmonicTrendCoefficients.select(sin)).rename(name_phs)
+                
+                # add amp and phs to list
+                amp_phs_list.append(amp)
+                amp_phs_list.append(phs)
+            
+            # stack amp_phs to a multiband img, note here need to add the constant and t coefficients
+            # also, multiply by 1000 and convert the img to int
+            amp_phs_img = ee.Image([amp_phs_list] + 
+                                   [harmonicTrendCoefficients.select(f'{idx}_constant')] + 
+                                   [harmonicTrendCoefficients.select(f'{idx}_t')]).multiply(1000).toInt16()
  
+            Amplitude_Phase.extend([amp_phs_img])
+    
+    
+        #_____________________Step_5_Store_result_to_class_attributes__________________________   
         
         # multiply all computated by 1000 and convet them into a Signed-16 interge to reduce space.
         self.harmonicTrendCoefficients = ee.Image(harmonicTrendCoefficients_list).multiply(1000).toInt16()
         self.harmonicTrendResidule     = ee.Image(residule_list).multiply(1000).toInt16()
+        
+        # store thefitted and amp_phs img to dict
         self.fittedHarmonic            = fittedHarmonic_dict
-        
-        
-    def Stp_4_Make_a_figure(self,point = (116.3, 38.5)):
-        
-        # Select a arbitrary point in the map.
-        point = ee.Geometry.Point(point)
-        
-        # Define the original ND and fitted ND variable
-        original_NDVI = self.fittedHarmonic_list[0].select(['NDVI']).getRegion(point,30).getInfo()
-        fitted_NDVI = self.fittedHarmonic_list[0].select(['fitted_NDVI']).getRegion(point,30).getInfo()
-        
-        original_NDBI = self.fittedHarmonic_list[1].select(['NDBI']).getRegion(point,30).getInfo()
-        fitted_NDBI = self.fittedHarmonic_list[1].select(['fitted_NDBI']).getRegion(point,30).getInfo()
-        
-        original_EVI = self.fittedHarmonic_list[2].select(['EVI']).getRegion(point,30).getInfo()
-        fitted_EVI = self.fittedHarmonic_list[2].select(['fitted_EVI']).getRegion(point,30).getInfo()
-        
-        # put  value into a pd.dataframe and convert the time to a normal format
-        original_ndvi_df = pd.DataFrame(original_NDVI[1:],columns = original_NDVI[0])
-        fitted_ndvi_df = pd.DataFrame(fitted_NDVI[1:],columns = fitted_NDVI[0])
-        
-        original_ndbi_df = pd.DataFrame(original_NDBI[1:],columns = original_NDBI[0])
-        fitted_ndbi_df = pd.DataFrame(fitted_NDBI[1:],columns = fitted_NDBI[0])
-        
-        original_evi_df = pd.DataFrame(original_EVI[1:],columns = original_EVI[0])
-        fitted_evi_df = pd.DataFrame(fitted_EVI[1:],columns = fitted_EVI[0])
-        
-        # Add time to fitted_ndvi_df since it has the same time stamp with NDVI.
-        ndvi_time = [datetime.datetime.fromtimestamp(i/1000) for i in original_ndvi_df['time']]
-        fitted_ndvi_df['time'] = ndvi_time
-        
-        ndbi_time = [datetime.datetime.fromtimestamp(i/1000) for i in original_ndbi_df['time']]
-        fitted_ndbi_df['time'] = ndbi_time
-        
-        evi_time = [datetime.datetime.fromtimestamp(i/1000) for i in original_evi_df['time']]
-        fitted_evi_df['time'] = evi_time
-        
-        # Plot the original and fitted value to inspect the outcome.
-        fig_orginal_ndvi = original_ndvi_df['NDVI'].plot(legend ='NDVI' )
-        fig_fit_ndvi = fitted_ndvi_df['fitted_NDVI'].plot(legend ='fitted_NDVI')
-        
-        fig_orginal_ndbi = original_ndbi_df['NDBI'].plot(legend ='NDBI' )
-        fig_fit_ndbi = fitted_ndbi_df['fitted_NDBI'].plot(legend ='fitted_NDBI')
-        
-        fig_orginal_evi = original_evi_df['EVI'].plot(legend ='EVI' )
-        fig_fit_evi = fitted_evi_df['fitted_EVI'].plot(legend ='fitted_EVI')
-        
-        return [[fig_orginal_ndvi,fig_fit_ndvi],[fig_orginal_ndbi,fig_fit_ndbi],[fig_orginal_evi,fig_fit_evi]]
-        
-        
-
-
-# In[ ]:
-
-
-
-
-
-# In[17]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
+        self.Amplitude_Phase_img       = ee.Image(Amplitude_Phase)
 
 
 # In[ ]:

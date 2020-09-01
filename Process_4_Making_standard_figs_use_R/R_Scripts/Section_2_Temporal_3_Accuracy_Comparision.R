@@ -38,7 +38,7 @@ plt_acc_compare = p_2_3 +
   scale_color_discrete(labels = c("GAIA", "This study")) +
   labs(color = '',
        fill  = '',
-       x='Year Range',
+       x='Year',
        y='Accuracy') 
 
 

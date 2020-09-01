@@ -4,13 +4,15 @@ library(dplyr)
 library(cowplot)
 library(stringr)
 library(comprehenr)
+library(stringr)
 
 
 #________________________step 1: read data and format the df________________________
 data.area_change = read.csv(paste("../../Process_2_Temporal_Check/",
                                    "Result/",
                                    "Area_change.csv",sep=""),
-                             stringsAsFactors = T)
+                             stringsAsFactors = T)%>% 
+  mutate(year = str_replace(year, "_", "-"))
 
 
 #______________________step 2: make plot________________________
@@ -28,7 +30,7 @@ plt_area_change = p_2_2 +
         panel.background = element_blank(),
         axis.line.x.bottom = element_line(),
         axis.line.y.left = element_line(),
-        legend.position = c(0.15, 0.7),
+        legend.position = c(0.13, 0.73),
         legend.key = element_rect(fill = NA ))+
   labs(color = '',
        fill  = '',

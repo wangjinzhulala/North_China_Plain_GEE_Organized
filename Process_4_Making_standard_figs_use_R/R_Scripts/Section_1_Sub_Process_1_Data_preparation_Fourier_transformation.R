@@ -48,7 +48,7 @@ p_harmonic_themed = p_harmonic +
 #_________________step 2: make a boxplot of Harmonic~Mean_Err_____________________
 
 # make a boxplot of Span~Mean_Err (650*400)
-p_span = data.p_1_1 %>% 
+p_span = data.p_1_1 %>%  
   filter(Harmonic==3) %>% 
   ggplot(aes(x=Span,y=Mean_Err)) +
   stat_boxplot(geom ='errorbar',width = 0.25,color='#CAA1A0') +

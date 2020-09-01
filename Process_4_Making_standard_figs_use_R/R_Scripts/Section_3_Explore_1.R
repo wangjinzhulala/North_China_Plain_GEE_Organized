@@ -94,8 +94,7 @@ filter_fourier = function(df,x) {
         data =  original_df,
         geom = 'raster',
         aes(fill = after_stat(count)),
-        contour = FALSE,
-        show.legend = F) +
+        contour = FALSE) +
       # plot_2: ribbon of fit value
       stat_summary(
         data = fit_df,
@@ -116,8 +115,7 @@ filter_fourier = function(df,x) {
       scale_fill_gradient(low = "white",
                           high = "black",
                           limits = c(0, 500), 
-                          oob = scales::squish) +
-      theme(plot.margin = margin(l=-0.5, b = -0.5,unit="cm"))}
+                          oob = scales::squish) }
 
 
 # create a df that stores all From|Type|Index combinations and the correspoding plots
@@ -157,6 +155,8 @@ plt_fourier_fit = plot_grid(greedy = T,rel_widths = c(5,5),ncol = 2,align = 'hv'
                                                                axis.ticks.y = element_blank()))
 
 #________________________step 3: save to disk ________________________
+
+plt_fourier_fit
 
 ggsave(plot = plt_fourier_fit,
        "../Section_3_1_Fourier_fit.svg", 

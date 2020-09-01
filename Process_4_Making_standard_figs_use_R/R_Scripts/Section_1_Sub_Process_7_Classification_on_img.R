@@ -40,15 +40,13 @@ data.p_7 = rbind(data.p_7_acc_landsat,data.p_7_acc_sentinel)
 #______________________step 3: make plot________________________
 
 plt_classification_acc = data.p_7 %>% 
-  ggplot(aes(x=year_range,y=Overall_ACC,group=1)) +
-  stat_summary(aes(color='Accuracy(sd)'),
-               fun  = 'mean',
-               geom = 'line') +
-  stat_summary(aes(fill='Accuracy(sd)'),
-               fun.data = 'mean_se',
-               geom='ribbon',
-               alpha = 1/5,
-               color='grey98') +
+  ggplot(aes(x=year_range,y=Overall_ACC)) +
+  stat_boxplot(geom ='errorbar',width = 0.25,color='#CAA1A0') +
+  geom_boxplot(outlier.size = 0.8, 
+               outlier.alpha = 0.6,
+               outlier.shape = 1,
+               width = 0.3,
+               size=0.3)+
   labs(x = 'Year',
        y ='Accuracy (%)') +
   theme(panel.grid.major = element_blank(),
@@ -59,6 +57,7 @@ plt_classification_acc = data.p_7 %>%
         legend.position = c(0.65, 0.8)) +
   scale_color_manual(values = c('#3081BA')) +
   scale_fill_manual(values = c('#3081BA')) +
+  scale_y_continuous(breaks = seq(1,100,0.5)) +
   labs(color = '',
        fill = '')
   
@@ -69,15 +68,15 @@ plt_classification_acc
 
 ggsave(plot = plt_classification_acc,
        "../Section_1_7_classification_Accuracy.svg", 
-       width = 25, 
-       height = 15, 
+       width = 19, 
+       height = 10, 
        units = "cm",
        dpi=300)
 
 ggsave(plot = plt_classification_acc,
        "../Section_1_7_classification_Accuracy.png", 
-       width = 25, 
-       height = 15, 
+       width = 19, 
+       height = 10, 
        units = "cm",
        dpi=300)
 
