@@ -21,6 +21,7 @@ data.p_7_acc_landsat = read.csv(paste("../../Process_1_GEE_Python_Classification
                                       "Classification_Accuracy.csv",sep=""),
                                 stringsAsFactors = T)
 
+
 #______________________step 2: formating the df________________________
 
 # mutate the df so we can get 'Sentinel/Landsat' and 'Year range' seperately
@@ -159,6 +160,11 @@ plt_window_iteration
 
 #__________step 5: make plot to compare the original/temporal corrected accuracy________
 
+Temporal_checked_df = data.temporal_1 %>% 
+                        filter(window == 3) %>% 
+                        filter(iteration == 9)
+
+
 p_2_3 = ggplot() +
   ######## Original accuracy
   stat_summary(data = data.p_7,
@@ -179,7 +185,7 @@ p_2_3 = ggplot() +
        color = '',
        fill = '') +
   ######## temporal correction accuracy
-  geom_line(data = data.tempral_filter,
+  geom_line(data = Temporal_checked_df,
             group =1,
             mapping = aes(x=year,y=accuracy,color = 'Temporal Corrected'))
 
@@ -190,33 +196,66 @@ plt_compare_original_temporal_acc = p_2_3 +
         panel.background = element_blank(),
         axis.line.x.bottom = element_line(),
         axis.line.y.left = element_line(),
-        legend.position = c(0.13, 0.9),
+        legend.position = c(0.17, 0.9),
         legend.key = element_rect(fill = NA ))+
   labs(color = '',
        fill  = '',
        y = 'Accuracy (%)',
-       x = 'Size(%)')
+       x = 'Year') +
+  scale_y_continuous(breaks = seq(0,100,0.5))
 
 plt_compare_original_temporal_acc
 
 
-#__________step 6: save to disk_____________
+
+#__________step 7: save to disk_____________
 
 plt_window_iteration
 plt_compare_original_temporal_acc
 
 ggsave(plot = plt_window_iteration,
-       "../Section_2_1_temporal_iteration_accuracy.svg", 
+       "../Section_2_1_1_temporal_iteration_accuracy.svg", 
        width = 14, 
        height = 16, 
        units = "cm",
        dpi=300)
 
 ggsave(plot = plt_window_iteration,
-       "../Section_2_1_temporal_iteration_accuracy.png", 
+       "../Section_2_1_1_temporal_iteration_accuracy.png", 
        width = 14, 
        height = 16, 
        units = "cm",
        dpi=300)
+
+###
+
+ggsave(plot = plt_compare_original_temporal_acc,
+       "../Section_2_1_2_compare_original_temporal_acc.svg", 
+       width = 20, 
+       height = 13, 
+       units = "cm",
+       dpi=300)
+
+ggsave(plot = plt_compare_original_temporal_acc,
+       "../Section_2_1_2_compare_original_temporal_acc.png", 
+       width = 20, 
+       height = 13, 
+       units = "cm",
+       dpi=300)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

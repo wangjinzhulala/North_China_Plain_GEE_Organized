@@ -15,7 +15,9 @@ data.area_change = read.csv(paste("../../Process_2_Temporal_Check/",
   mutate(year = str_replace(year, "_", "-"))
 
 
-#______________________step 2: make plot________________________
+
+
+#______________________step 2: make plot of area change of my study________________________
 p_2_2 = data.area_change %>% 
   mutate(area = sum*30*30/1000/1000) %>% 
   filter(Type == 'My') %>% 
@@ -37,7 +39,11 @@ plt_area_change = p_2_2 +
        y = 'Area (km2)',
        x = 'Year')
 
-#______________________step 3: save plot to disk________________________
+
+
+
+
+#______________________step 4: save plot to disk________________________
 plt_area_change
 
 ggsave(plot = plt_area_change,

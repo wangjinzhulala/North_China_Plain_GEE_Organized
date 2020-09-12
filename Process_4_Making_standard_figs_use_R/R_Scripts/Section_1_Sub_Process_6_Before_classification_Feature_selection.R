@@ -46,6 +46,7 @@ plt_ACC_Tree
 
 #_________________step 3: plot In_bands~ACC_____________________
 
+#___Type_1_ribbon
 p_1_6_2 = data.p_6_grid_acc %>% 
   filter(Tree==100) %>% 
   mutate(Year = str_replace(Year, "_", "-")) %>% 
@@ -59,7 +60,7 @@ p_1_6_2 = data.p_6_grid_acc %>%
                size=0.1,
                color='grey99') 
   
-plt_inbands_acc = p_1_6_2 + 
+plt_inbands_acc_ribbon = p_1_6_2 + 
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
@@ -69,8 +70,26 @@ plt_inbands_acc = p_1_6_2 +
   labs(color = 'Accuracy and Standard Deviation',
        fill = 'Accuracy and Standard Deviation')
 
-plt_inbands_acc
+#___Type_2_bar
 
+plt_inbands_acc_bar = data.p_6_grid_acc %>% 
+  filter(Tree==100) %>% 
+  mutate(Year = str_replace(Year, "_", "-")) %>% 
+  mutate(In_Bands = str_replace_all(In_Bands, "_", " + ")) %>% 
+  mutate(Accuracy = Accuracy *100) %>% 
+  ggplot(aes(x=Year,y=Accuracy,fill = In_Bands)) +
+  stat_summary(fun='mean',geom='bar',color='grey90',position = 'dodge') +
+  coord_cartesian(ylim = c(80,97)) + 
+  labs(fill = 'Input bands') +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.line.x.bottom = element_line(),
+        axis.line.y.left = element_line()) +
+  scale_fill_viridis_d(option = 'D')
+
+plt_inbands_acc_ribbon
+plt_inbands_acc_bar
 
 #_________________step 3: plot In_Size~ACC_____________________
 
@@ -127,17 +146,17 @@ plot
 
 #_____________step 5: save plots to disk____________
 
-ggsave(plot = plt_inbands_acc,
+ggsave(plot = plt_inbands_acc_bar,
        "../Section_1_6_2_In_bands_Accuracy.svg", 
        width = 30, 
-       height = 15, 
+       height = 8, 
        units = "cm",
        dpi=300)
 
-ggsave(plot = plt_inbands_acc,
+ggsave(plot = plt_inbands_acc_bar,
        "../Section_1_6_2_In_bands_Accuracy.png", 
-       width = 35, 
-       height = 15, 
+       width = 30, 
+       height = 8, 
        units = "cm",
        dpi=300)
 
@@ -155,6 +174,42 @@ ggsave(plot = plot,
        height = 16, 
        units = "cm",
        dpi=300)
+
+
+
+
+
+
+
+
+
+
+
+
+data.p_6_grid_acc %>% 
+  filter(Tree==100) %>% 
+  mutate(Year = str_replace(Year, "_", "-")) %>% 
+  mutate(In_Bands = str_replace_all(In_Bands, "_", " + ")) %>% 
+  mutate(Accuracy = Accuracy *100) %>% 
+  ggplot(aes(x=Year,y=Accuracy,fill = In_Bands)) +
+  geom_bar(position = 'dodge',stat = 'identity',width = 0.5) +
+  coord_cartesian(ylim = c(80,97)) + 
+  labs(fill = 'Input bands') +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.line.x.bottom = element_line(),
+        axis.line.y.left = element_line())
+
+
+
+
+
+
+
+
+
+
 
 
 
