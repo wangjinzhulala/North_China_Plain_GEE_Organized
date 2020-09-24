@@ -6,6 +6,10 @@ library(stringr)
 library(comprehenr)
 
 
+scientific_10 <- function(x) {
+  parse(text=gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
 
 #________________________step 1: read data and format the df________________________
 
@@ -13,25 +17,38 @@ data.accuracy = read.csv(paste("../../Process_2_Temporal_Check/",
                                   "Result/",
                                   "Accuracy_comparision.csv",sep=""),
                             stringsAsFactors = T) %>% 
-                mutate(year = str_replace(year,'_','-'))
+  mutate(Source = str_replace(Source, "My", "This study")) %>% 
+  filter(year>=1990) %>% 
+  filter((Source == 'This study') | (Source == 'GAIA'))
 
 
 data.area_change = read.csv(paste("../../Process_2_Temporal_Check/",
                                   "Result/",
                                   "Area_change.csv",sep=""),
-                            stringsAsFactors = T)%>% 
-  mutate(year = str_replace(year, "_", "-"))
+                            stringsAsFactors = T) %>% 
+  mutate(Source = str_replace(Source, "My", "This study")) 
 
 #______________________step 2: make plot of area comparision________________________
 
-p_2_3 = data.area_change %>% 
+data_2_3_point = data.area_change %>% 
+  filter((Source == 'GHSL') |(Source == 'GIS'))%>% 
   group_by(year,Source) %>% 
   summarise(area = sum(area_km2)) %>% 
-  ggplot(aes(x=year,y=area,color=Source,group = Source)) + 
-  geom_line(size=1) +
-  geom_point(size=1.5) +
-  scale_color_hue()+
-  scale_color_discrete(labels = c("GAIA", "This study"))
+  mutate(point = Source)
+
+data_2_3_line = data.area_change %>% 
+  filter((Source != 'GHSL') & (Source != 'GIS') & (Source != 'GRUMP 1995')) %>% 
+  group_by(year,Source) %>% 
+  summarise(area = sum(area_km2)) %>% 
+  mutate(line = Source)
+
+p_2_3 = ggplot( data = data_2_3_line, aes(x=year,y=area))  +
+  geom_line(aes(color=Source),size=1) +
+    geom_point(data = data_2_3_point,
+             aes(fill=Source),shape=21,size=4) +
+  scale_y_continuous(labels = comma) +
+  scale_fill_manual(values = c('grey70','yellow')) 
+         
 
 plt_area_change_compare = p_2_3 +
   theme(panel.grid.major = element_blank(),
@@ -39,34 +56,39 @@ plt_area_change_compare = p_2_3 +
         panel.background = element_blank(),
         axis.line.x.bottom = element_line(),
         axis.line.y.left = element_line(),
-        axis.text.x.bottom = element_blank(),
-        legend.position = c(0.10, 0.8),
-        legend.key = element_rect(fill = NA ))+
+        #axis.text.x.bottom = element_blank(),
+        legend.position = c(0.32, 0.75),
+        legend.key = element_rect(fill = NA ),
+        legend.box = "horizontal")+
+  scale_y_continuous(breaks = seq(0,200000,25000),labels = seq(0,20,2.5)) +
+  scale_x_continuous(breaks = seq(1980,2020,5),minor_breaks = seq(1980,2020,1))+
+  guides(color = guide_legend(ncol = 2)) +
   labs(color = '',
        fill  = '',
-       y = 'Area (km2)',
+       y = bquote('Area ('*10^5 ~km^2*')'),
        x = '')
 
 
-plt_area_change_compare
+
+plt_area_change_compare 
 
 #______________________step 3: make plot of accuracy comparision________________________
 
-p_2_3 = data.accuracy %>% 
-  select(Type,year,Overall_ACC) %>% 
-  ggplot(aes(x=year,y=Overall_ACC,color=Type,group=Type)) +
-  geom_line(size=1,show.legend = F) +
-  geom_point(size=1.5,show.legend = F) 
+p_2_4 = data.accuracy %>% 
+  ggplot(aes(x=year,y=Overall_ACC,color=Source,group=Source)) +
+  geom_point(shape=1) +
+  geom_line(show.legend = F) +
+  expand_limits(x = c(1990,2020))
 
 
 
-plt_acc_compare = p_2_3 +
+plt_acc_compare = p_2_4 +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         axis.line.x.bottom = element_line(),
         axis.line.y.left = element_line(),
-        legend.position = c(0.09, 0.96),
+        legend.position = c(0.13, 0.55),
         legend.key = element_rect(fill = NA )) +
   scale_color_discrete(labels = c("GAIA", "This study")) +
   labs(color = '',
@@ -97,18 +119,17 @@ plt_compare_acc_area
 
 ggsave(plot = plt_compare_acc_area,
        "../Section_2_3_Acc_compare.svg", 
-       width = 22, 
+       width = 20, 
        height = 16, 
        units = "cm",
        dpi=300)
 
 ggsave(plot = plt_compare_acc_area,
        "../Section_2_3_Acc_compare.png", 
-       width = 22, 
+       width = 20, 
        height = 16, 
        units = "cm",
        dpi=300)
-
 
 
 
