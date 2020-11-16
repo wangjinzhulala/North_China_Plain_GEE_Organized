@@ -37,16 +37,24 @@ data.p_7_acc_sentinel = data.p_7_acc_sentinel %>%
 data.p_7 = rbind(data.p_7_acc_landsat,data.p_7_acc_sentinel) 
 
 
+# calculate the summary data
+data_summary <- data.p_7 %>% 
+  group_by(year_range) %>%   
+  summarise(mean = mean(Overall_ACC),  
+            sd = sd(Overall_ACC), 
+            n = n(),  
+            SE = sd(Overall_ACC)/sqrt(n())) 
+
+
+
+
 #______________________step 3: make plot________________________
 
-plt_classification_acc = data.p_7 %>% 
-  ggplot(aes(x=year_range,y=Overall_ACC)) +
-  stat_boxplot(geom ='errorbar',width = 0.25,color='#CAA1A0') +
-  geom_boxplot(outlier.size = 0.8, 
-               outlier.alpha = 0.6,
-               outlier.shape = 1,
-               width = 0.3,
-               size=0.3)+
+#_____________Bar plot with standard error___________
+summary_Plot <- ggplot(data_summary, aes(year_range, mean)) + 
+  geom_col(width = 0.35,fill = 'grey90') +  
+  geom_errorbar(aes(ymin = mean - SE, ymax = mean + SE), width=0.3,size = 0.25) +
+  coord_cartesian(ylim = c(80, 96))+
   labs(x = 'Year',
        y ='Accuracy (%)') +
   theme(panel.grid.major = element_blank(),
@@ -57,7 +65,32 @@ plt_classification_acc = data.p_7 %>%
         legend.position = c(0.65, 0.8)) +
   scale_color_manual(values = c('#3081BA')) +
   scale_fill_manual(values = c('#3081BA')) +
-  scale_y_continuous(breaks = seq(1,100,0.5)) +
+  scale_y_continuous(breaks = seq(0,100,2.5),expand = c(0, 0)) +
+  labs(color = '',
+       fill = '')
+
+
+
+#_____________Box plot with standard error___________
+plt_classification_acc = data.p_7 %>% 
+  ggplot(aes(x=year_range,y=Overall_ACC)) +
+    stat_boxplot(geom ='errorbar',width = 0.4,color='grey20') +
+  geom_boxplot(outlier.size = 0.8, 
+               outlier.alpha = 0.6,
+               outlier.shape = 1,
+               width = 0.5,
+               size=0.3) +
+  labs(x = 'Year',
+       y ='Accuracy (%)') +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.line.x.bottom = element_line(),
+        axis.line.y.left = element_line(),
+        legend.position = c(0.65, 0.8)) +
+  scale_color_manual(values = c('#3081BA')) +
+  scale_fill_manual(values = c('#3081BA')) +
+  scale_y_continuous(breaks = seq(0,100,5)) +
   labs(color = '',
        fill = '')
   
@@ -65,20 +98,38 @@ plt_classification_acc = data.p_7 %>%
 #_____________step 4: save plot to disk____________
 
 plt_classification_acc
+summary_Plot
+
+ggsave(plot = summary_Plot,
+       "../Section_1_7_classification_Accuracy_bar.svg", 
+       width = 20, 
+       height = 10, 
+       units = "cm",
+       dpi=500)
+
+ggsave(plot = summary_Plot,
+       "../Section_1_7_classification_Accuracy_bar.png", 
+       width = 20, 
+       height = 10, 
+       units = "cm",
+       dpi=500)
+
+#-----------
+
 
 ggsave(plot = plt_classification_acc,
        "../Section_1_7_classification_Accuracy.svg", 
-       width = 19, 
+       width = 20, 
        height = 10, 
        units = "cm",
-       dpi=300)
+       dpi=500)
 
 ggsave(plot = plt_classification_acc,
        "../Section_1_7_classification_Accuracy.png", 
-       width = 19, 
+       width = 20, 
        height = 10, 
        units = "cm",
-       dpi=300)
+       dpi=500)
 
 
 

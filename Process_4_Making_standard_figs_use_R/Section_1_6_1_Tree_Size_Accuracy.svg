@@ -67,7 +67,7 @@
 <rect x='292.90' y='61.61' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #F2F2F2;' clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)' />
 <line x1='294.63' y1='70.25' x2='308.45' y2='70.25' style='stroke-width: 1.07; stroke: #3081BA; stroke-linecap: butt;' clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)' />
 <rect x='293.61' y='62.32' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #3081BA; fill-opacity: 0.33;' clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)' />
-<g clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)'><text x='315.66' y='73.40' style='font-size: 8.80px; font-family: Arial;' textLength='51.34px' lengthAdjust='spacingAndGlyphs'>Accuracy(sd)</text></g>
+<g clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)'><text x='315.66' y='73.40' style='font-size: 8.80px; font-family: Arial;' textLength='51.34px' lengthAdjust='spacingAndGlyphs'>Accuracy(se)</text></g>
 <g clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)'><text x='203.76' y='58.24' style='font-size: 12.00px; font-weight: bold; font-family: Arial;' textLength='10.67px' lengthAdjust='spacingAndGlyphs'>a)</text></g>
 <defs>
   <clipPath id='cpMC4wMHwzOTYuODV8NDUzLjU0fDIyNi43Nw=='>
@@ -122,6 +122,6 @@
 <rect x='292.90' y='288.38' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #F2F2F2;' clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)' />
 <line x1='294.63' y1='297.02' x2='308.45' y2='297.02' style='stroke-width: 1.07; stroke: #3081BA; stroke-linecap: butt;' clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)' />
 <rect x='293.61' y='289.09' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #3081BA; fill-opacity: 0.33;' clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)' />
-<g clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)'><text x='315.66' y='300.17' style='font-size: 8.80px; font-family: Arial;' textLength='51.34px' lengthAdjust='spacingAndGlyphs'>Accuracy(sd)</text></g>
+<g clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)'><text x='315.66' y='300.17' style='font-size: 8.80px; font-family: Arial;' textLength='51.34px' lengthAdjust='spacingAndGlyphs'>Accuracy(se)</text></g>
 <g clip-path='url(#cpMC4wMHwzOTYuODV8NDUzLjU0fDAuMDA=)'><text x='204.09' y='285.01' style='font-size: 12.00px; font-weight: bold; font-family: Arial;' textLength='11.33px' lengthAdjust='spacingAndGlyphs'>b)</text></g>
 </svg>

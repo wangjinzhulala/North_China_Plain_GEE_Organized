@@ -19,10 +19,10 @@ p_1_6_1 = data.p_6_grid_acc %>%
   filter(In_Bands == 'Spectrum_Normalize_Fourier_Terrain_Meterology') %>% 
   mutate(Accuracy = Accuracy *100) %>% 
   ggplot(aes(x=Tree,y=Accuracy)) +
-  stat_summary(aes(color='Accuracy(sd)',group='Accuracy(sd)'),
+  stat_summary(aes(color='Accuracy(se)',group='Accuracy(se)'),
                fun = 'mean',
                geom = 'line') +
-  stat_summary(aes(fill = 'Accuracy(sd)',group='Accuracy(sd)'),
+  stat_summary(aes(fill = 'Accuracy(se)',group='Accuracy(se)'),
                fun.data = 'mean_se',
                geom = 'ribbon',
                alpha = 1/3)+
@@ -51,6 +51,7 @@ p_1_6_2 = data.p_6_grid_acc %>%
   filter(Tree==100) %>% 
   mutate(Year = str_replace(Year, "_", "-")) %>% 
   mutate(In_Bands = str_replace_all(In_Bands, "_", " + ")) %>% 
+  mutate(In_Bands = str_replace_all(In_Bands, "Fourier", "Temporal")) %>% 
   mutate(Accuracy = Accuracy *100) %>% 
   ggplot(aes(x=Year,y=Accuracy,group=In_Bands,color=In_Bands,fill=In_Bands)) +
   stat_summary(fun = 'mean',geom = 'line') +
@@ -67,8 +68,8 @@ plt_inbands_acc_ribbon = p_1_6_2 +
         axis.line.x.bottom = element_line(),
         axis.line.y.left = element_line(),
         legend.position = c(0.3, 0.57)) +
-  labs(color = 'Accuracy and Standard Deviation',
-       fill = 'Accuracy and Standard Deviation')
+  labs(color = 'Input predictors',
+       fill = 'Input predictors')
 
 #___Type_2_bar
 
@@ -105,10 +106,10 @@ p_1_6_3 = data.p_6_sample_size %>%
   mutate(Acc_value = Acc_value *100) %>% 
   group_by(Size) %>% 
   ggplot(aes(x=Size,y=Acc_value)) +
-  stat_summary(aes(color='Accuracy(sd)',group='Accuracy(sd)'),
+  stat_summary(aes(color='Accuracy(se)',group='Accuracy(se)'),
                fun = 'mean',
                geom = 'line') +
-  stat_summary(aes(fill = 'Accuracy(sd)',group='Accuracy(sd)'),
+  stat_summary(aes(fill = 'Accuracy(se)',group='Accuracy(se)'),
                fun.data = 'mean_se',
                geom = 'ribbon',
                alpha = 1/3)+
@@ -151,14 +152,30 @@ ggsave(plot = plt_inbands_acc_bar,
        width = 30, 
        height = 8, 
        units = "cm",
-       dpi=300)
+       dpi=500)
 
 ggsave(plot = plt_inbands_acc_bar,
        "../Section_1_6_2_In_bands_Accuracy.png", 
        width = 30, 
        height = 8, 
        units = "cm",
-       dpi=300)
+       dpi=500)
+
+
+
+ggsave(plot = plt_inbands_acc_ribbon,
+       "../Section_1_6_2_plt_inbands_acc_ribbon.svg", 
+       width = 23, 
+       height = 15, 
+       units = "cm",
+       dpi=500)
+
+ggsave(plot = plt_inbands_acc_ribbon,
+       "../Section_1_6_2_plt_inbands_acc_ribbon.png", 
+       width = 23, 
+       height = 15, 
+       units = "cm",
+       dpi=500)
 
 
 ggsave(plot = plot,

@@ -12,7 +12,7 @@ data.area_change = read.csv(paste("../../Process_2_Temporal_Check/",
                                    "Result/",
                                    "Area_change.csv",sep=""),
                              stringsAsFactors = T)%>% 
-  mutate(year = str_replace(year, "_", "-"))
+  mutate(year = paste0((year-1),'-',(year+1)))
 
 
 
@@ -20,9 +20,9 @@ data.area_change = read.csv(paste("../../Process_2_Temporal_Check/",
 #______________________step 2: make plot of area change of my study________________________
 p_2_2 = data.area_change %>% 
   mutate(area = sum*30*30/1000/1000) %>% 
-  filter(Type == 'My') %>% 
+  filter(Source == 'My') %>% 
   ggplot(aes(x=year,y=area,color=EN_Name,group=EN_Name)) +
-  geom_line(size=1) +
+  geom_line(size=0.5) +
   geom_point(size=1.5) +
   scale_color_hue()
 
@@ -33,10 +33,11 @@ plt_area_change = p_2_2 +
         axis.line.x.bottom = element_line(),
         axis.line.y.left = element_line(),
         legend.position = c(0.13, 0.73),
-        legend.key = element_rect(fill = NA ))+
+        legend.key = element_rect(fill = NA )) +
+  scale_y_continuous(breaks = seq(0,200000,5000),labels = seq(0,20,0.5)) +
   labs(color = '',
        fill  = '',
-       y = 'Area (km2)',
+       y = bquote('Area ('*10^5 ~km^2*')'),
        x = 'Year')
 
 
@@ -51,14 +52,14 @@ ggsave(plot = plt_area_change,
        width = 20, 
        height = 10, 
        units = "cm",
-       dpi=300)
+       dpi=500)
 
 ggsave(plot = plt_area_change,
        "../Section_2_2_Area_change.png", 
        width = 20, 
        height = 10, 
        units = "cm",
-       dpi=300)
+       dpi=500)
 
 
 
