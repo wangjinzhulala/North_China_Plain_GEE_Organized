@@ -51,7 +51,7 @@ p_1_6_2 = data.p_6_grid_acc %>%
   filter(Tree==100) %>% 
   mutate(Year = str_replace(Year, "_", "-")) %>% 
   mutate(In_Bands = str_replace_all(In_Bands, "_", " + ")) %>% 
-  mutate(In_Bands = str_replace_all(In_Bands, "Fourier", "Temporal")) %>% 
+  mutate(In_Bands = str_replace_all(In_Bands, "Meterology", "Meteorology")) %>% 
   mutate(Accuracy = Accuracy *100) %>% 
   ggplot(aes(x=Year,y=Accuracy,group=In_Bands,color=In_Bands,fill=In_Bands)) +
   stat_summary(fun = 'mean',geom = 'line') +
@@ -67,7 +67,9 @@ plt_inbands_acc_ribbon = p_1_6_2 +
         panel.background = element_blank(),
         axis.line.x.bottom = element_line(),
         axis.line.y.left = element_line(),
-        legend.position = c(0.3, 0.57)) +
+        legend.position = c(0.3, 0.60),
+        legend.background = element_blank()) +
+  ylab('Accuracy(%)') +
   labs(color = 'Input predictors',
        fill = 'Input predictors')
 
@@ -165,15 +167,15 @@ ggsave(plot = plt_inbands_acc_bar,
 
 ggsave(plot = plt_inbands_acc_ribbon,
        "../Section_1_6_2_plt_inbands_acc_ribbon.svg", 
-       width = 23, 
-       height = 15, 
+       width = 20, 
+       height = 13, 
        units = "cm",
        dpi=500)
 
 ggsave(plot = plt_inbands_acc_ribbon,
        "../Section_1_6_2_plt_inbands_acc_ribbon.png", 
-       width = 23, 
-       height = 15, 
+       width = 20, 
+       height = 13, 
        units = "cm",
        dpi=500)
 
