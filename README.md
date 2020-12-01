@@ -59,7 +59,9 @@ There are five types of input data for the built-up land mapping, all of them (e
 #### --------------------------------------------------The study area--------------------------------------------------
 Five middle and eastern provinces of China corresponding to the North China Plain region were selected as the study area . The area spanned 780,000 km2 and five provinces (i.e., Henan, Hebei, Shandong, Anhui, and Jiangsu) and two metropoles  (Beijing and Tianjin). The study area is one of China’s fastest developing regions, with the urban population rate (excluding the two metropoles) tripling from ~20% in 1990 to ~60% in 2018. The North China Plain holds a strategic position in China in terms of economic development and food security, generating ~37% of the gross domestic product and ~35% of China’s grain production in 2019.
 
+<p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Map_1_Research_Arae.jpg"  width="600"/>
+</p>
 
 #### --------------------------------------------------The workflow--------------------------------------------------
 The generall work flow is as follows:
@@ -69,8 +71,9 @@ The generall work flow is as follows:
 - Apply a Temporal-correction to remove inconsistent classifications
 - Compare the "overall accuracy" and "area change" between this study and other datasets.
 
-![The workflow](https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/The%20work%20Flow_Page_1.jpg)
-
+<p align="center">
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/The%20work%20Flow_Page_1.jpg" >
+</p>
 _________________________________________________________
 
 ## Preprocessing of input image data
@@ -92,7 +95,9 @@ There ara two Jyputer Notebook files in this path:
 
 > Specifically, 100 random points were distributed through the research area, and the mean error between the original value and the fitted value for each point was computed with different harmonic numbers and stack years. The harmonic numbers were set to 1–10, and the stack years were set to 1–5 (where 1 means using only the normalized data from 2015, while 5 means using all the normalized indices from 2015–2019). The harmonic number was determined to be 3, i.e., where the most significant drop in mean error occurred. Fewer harmonic numbers are preferred as they produce fewer coefficients for later classification. The stack year was also determined to be 3 by balancing the data used for the discrete Fourier transform and the mean error decrease. Fewer stack years are preferred because built-up land can be mapped at a higher frequency if fewer data are used for the discrete Fourier transform.
 
-> <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_1_Harmonic_Span.svg"  width="600"/>
+<p align="center">
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_1_Harmonic_Span.svg"  width="600"/>
+</p>
 
 > *Step_2_Create_Fourier_imgs.ipynb* is to export the Fourier images to GEE_assest.
 
@@ -138,14 +143,21 @@ _________________________________________________________
 
 Because the conversion from non-built-up land to built-up land is unlikely to occur , built-up samples collected using Landsat base-maps from 1990–1992 were used for classification in 1990–2013. The non-built-up samples collected using Google Earth High Definition (HD) maps were used for the classification from 1990 to 2019. Given the 30-year research period, a few sample points may be incorrect. The built-up samples were re-inspected using the Google Earth HD map of 2014 and then used for classification in 2014–2019. We also re-inspected samples to ensure high accuracy in the last two classifications, which will be used as masks to remove inconsistencies in the former classifications.
 
+<p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/The%20work%20Flow_Page_2.jpg"  width="600"/>
+</p>
+
+
 
 #### ---------------------------- Collection of built-up samples ----------------------------
 The raw built-up samples were taken from the [National Settlements Database of China](http://www.resdc.cn/data.aspx?DATAID=302). These records were generated in 2000 and comprised two types of settlement: government sites (including the department offices of provinces, cities, districts, counties, towns, and villages) and the offices of nationally owned companies. The total number of National Settlement points of the study area is 751,411, exceeding the analysis capacity in this study. We randomly subset 5,000 points from the total dataset, then used historical Landsat images to visually check each point and further diminish the number to 4,000 by excluding low-quality points (e.g., those near water bodies or in hilly areas).
 
 Because of the low quality of Landsat data from 1990 to 1992, two false-color base maps (one map created using NDVI, NDBI, and EVI; the other map created from the coefficients of the temporal features) were used to assist with a visual inspection. Each sample point was inspected against all three base maps. We manually nudged their position to the center of nearby built-up land for some points located at positions that could be easily misclassified (such as the edge of a village or a skim road). The visuall check can be see with [inspection video](https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Video/Suplement_Video_1_How_we_visualy_check_points.mp4)
 
+<p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Map_2_All_village_points.jpg"  width="600"/>
+</p>
+
 
 #### ---------------------------- Collection of non-built-up samples ----------------------------
 
@@ -155,7 +167,10 @@ A stratified sampling scheme was used to create the raw non-built-up samples. ND
 
 Non-built-up samples were visually inspected using the Google Earth HD map of 2019. Points located in built-up lands were removed. Points located close to built-up lands were manually nudged to nearby non-built-up land to avoid interference.
 
+<p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_5_Control_sample_NDVI_distribution.svg"  width="600"/>
+</p>
+
 
 _________________________________________________________
 
@@ -179,7 +194,13 @@ The code for this section is in *North_China_Plain_GEE_Organized/Process_1_GEE_P
 
 > *Step_2_Determine the best tree number and compare diff bands performances.ipynb*  runs a sensitive test between tree-number/diff-inbands to accuracy.
 
-> We used the sklearn.model_selection.GridSearchCV module to test the impacts of tree number on accuracy . We found no accuracy gains were achieved with more than 100 trees. Thus we set the tree number to 100. We also investigated control sample sizes from 0.5% to 99% of the sample and computed corresponding accuracy . We found that ~50% of the control samples were sufficient to high accuracy. In this study, 75% of the control samples were used for built-up land mapping, among which 70% were used to train the RF classifier. As a result, 52.5% (75% × 70%) of control samples were used to train the RF classifier, which was sufficient for stable classification.
+ We used the sklearn.model_selection.GridSearchCV module to test the impacts of tree number on accuracy . We found no accuracy gains were achieved with more than 100 trees. Thus we set the tree number to 100. We also investigated control sample sizes from 0.5% to 99% of the sample and computed corresponding accuracy . We found that ~50% of the control samples were sufficient to high accuracy. In this study, 75% of the control samples were used for built-up land mapping, among which 70% were used to train the RF classifier. As a result, 52.5% (75% × 70%) of control samples were used to train the RF classifier, which was sufficient for stable classification.
+
+<p align="center">
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_6_2_plt_inbands_acc_ribbon.svg"  width="600"/>
+</p>
+
+
 
 > *Step_4_Test_the_sample_size.ipynb*  run a sensitive test for sample-size to accuracy.
 
@@ -187,8 +208,9 @@ The code for this section is in *North_China_Plain_GEE_Organized/Process_1_GEE_P
 > 1) loop through the sample size from (0.05% to 99%) of the control sample;
 > 2) calculate the accuracy
 
+<p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_6_1_Tree_Size_Accuracy.svg"  width="600"/>
-
+</p>
 #### ------------------ Use the determined parameters to perform the classification ----------------------
 
 The code for this setction is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_7_Classification_on_img/Step_1_Classification_random_split_10_layers.ipynb*, which classifiy the input image to get built-up land maps. Because different training samples produce different classifications, we repeated the classification 10 times with a different sample splitting state (i.e., a seed number set from 0 to 9).
@@ -208,8 +230,13 @@ The code for this setction is in *North_China_Plain_GEE_Organized/Process_1_GEE_
 > 2) loop through each threshold, conver the pixel >= threshol to 1, others to 0;
 > 3) calculate the accuracy
 
+<p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_8_Ten_folds_correction.svg"  width="600"/>
+</p>
+
+<p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_3_ten_folds_sum.jpg"  width="600"/>
+</p>
 
 > *Step_2_Create_10_folds_corrected_img.ipynb* is to export the final classification computed from the sum image of 10 classifications
 with diff training sample
@@ -235,12 +262,15 @@ Before applying the temporal correction, the number of classifications (i.e., ma
 > 3) loop throuth the iteration number;
 > 4) calculat the area change with diff iterations and determine the iteration number to be 8; 
 
+<p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_2_1_1_temporal_window_accuracy.svg" width="600"/>
+</p>
 
 After determining the mask number, we ran another sensitivity test to determine the temporal correction's iteration number. We found that after 8 iterations, the built-up area remained stable. This pattern can be found for all classifications from 1990 to 2019. As a result, we determined the iteration number to be 8.
 
+<p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_2_1_2_plt_temporal_iteration_area.svg" width="600"/>
-
+</p>
 Lastly, we get the final bulit-up land maps of the study area:
 
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_1_Classification_demonstration.jpg" />
@@ -255,7 +285,9 @@ The code for this setction is in *North_China_Plain_GEE_Organized/Process_2_Temp
 > 3) loop throuth each Dataset-year bands;
 > 4) calculat the area and accuray;
 
+<p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_2_3_Acc_compare.svg" width="600"/>
+</p>
 
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_5_Compare_dataset.jpg" />
 
