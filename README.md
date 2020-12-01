@@ -1,7 +1,7 @@
 # Guide for mapping the bulit-up land in the North China Plain
 
 #### The data can be interactive inspected at [GEE-APP](https://wangjinzhulala.users.earthengine.app/view/built-up-evolution-in-5-middle-eastern-china-provinces)
-#### The data can be downloaded at [this link]() or [Baidu-netdisk]()
+#### The data can be downloaded at [Google-Drive]() or [Baidu-Netdisk]()
 _________________________________________________________
 
 >### Instruction for use
