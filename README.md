@@ -197,7 +197,7 @@ The code for this section is in *North_China_Plain_GEE_Organized/Process_1_GEE_P
  We used the sklearn.model_selection.GridSearchCV module to test the impacts of tree number on accuracy . We found no accuracy gains were achieved with more than 100 trees. Thus we set the tree number to 100. We also investigated control sample sizes from 0.5% to 99% of the sample and computed corresponding accuracy . We found that ~50% of the control samples were sufficient to high accuracy. In this study, 75% of the control samples were used for built-up land mapping, among which 70% were used to train the RF classifier. As a result, 52.5% (75% × 70%) of control samples were used to train the RF classifier, which was sufficient for stable classification.
 
 <p align="center">
-<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_6_2_plt_inbands_acc_ribbon.svg"  width="600"/>
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_6_2_plt_inbands_acc_ribbon.svg"  width="800"/>
 </p>
 
 <p align="center">
