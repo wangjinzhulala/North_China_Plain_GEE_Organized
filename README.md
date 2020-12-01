@@ -75,7 +75,14 @@ _________________________________________________________
 
 ## Preprocessing of input image data
 #### ----------------- Dtermine the best Stack-years, Harmonic number and export the Fourier images -----------------
-It is weird to process the Fourier transform at the first step. But we need to figure out how many data will be used in the Fourier transofrm. For example, if we use 2 years of data for the transform, then we will also need to use two years of data to create the cloud-free image of Landsat. As a result, the images used (aka, the stack-year) for Fourier transform determines the other data's producing.
+
+**The Discrete Fourier Transformation approximates a series of discrete values by summing up a linear function and several pairs of sinuate functions. A figure captures such fitting as below:**
+
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/The%20work%20Flow_Page_3.jpg" />
+
+**To make the producing of Fourier transform more easily deployed, we have packed it into a class in the path *North_China_Plain_GEE_Organized/blob/master/Process_1_GEE_Python_Classification/BackGround_modules/Class_1_Make_fourier_imgs.py*. After that, every time we want to apply the Fourier transform to a stack of images, we just need to import this class, specify the image-stack to be fitted and other parameters.**
+
+**The Fourier transform was perfromed first because we need to figure out how many data will be used in the Fourier transofrm. For example, if we use 2 years of data for the transform, then we will also need to use two years of data to create the cloud-free image of Landsat. As a result, the images used (aka, the stack-year) for Fourier transform determines the other data's producing.**
 
 The code for find the optimum Stack-years and Harmonic number is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_1_Data_preparation_Fourier_transformation*
 
@@ -156,6 +163,9 @@ _________________________________________________________
 
 #### ------------------ Before classification, make preparation and determine some parameters ----------------------
 
+**To make the classification easier to deployed, we packed it into a python-class in *North_China_Plain_GEE_Organized/blob/master/Process_1_GEE_Python_Classification/BackGround_modules/Class_2_Classify_Fourier_Img.py*. After that, every time we want to classifiy some images, we just need to import this class, specify the input images, bands involved in the classification and the traning sample.**
+
+
 The code for this section is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_6_Before_classification_Feature_selection/*. There are 4 steps for this section:
 
 > *Step_1_Extract_img_value_to_sample_points.ipynb* is to extract the input image's value to control points.
@@ -201,22 +211,53 @@ The code for this setction is in *North_China_Plain_GEE_Organized/Process_1_GEE_
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_8_Ten_folds_correction.svg"  width="600"/>
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_3_ten_folds_sum.jpg"  width="600"/>
 
+> *Step_2_Create_10_folds_corrected_img.ipynb* is to export the final classification computed from the sum image of 10 classifications
+with diff training sample
 
+Specifically, we:
+> 1) sum all 10 classifications to get a image with value from 0 to 10;
+> 2) loop through inband combination (this is for making the comparison map of diff in-bands);
+> 3) using 4 as threshold, the pixel >=4 were converted to 1, others to 0;
 
+## Apply a Temporal-correction to remove inconsistent classifications
 
+**To make the temporal-correction easier to deployed, we packed it into a python-class in *North_China_Plain_GEE_Organized/blob/master/Process_1_GEE_Python_Classification/BackGround_modules/Class_5_Temporal_consistency_check.py*. After that, every time we want to temporal correct a serise of bulit-up land maps, we just need to import this class, specify the input maps and mask number.**
 
+#### -------------------- Apply the temporal check  --------------------------
 
+The code for this setction is in *North_China_Plain_GEE_Organized/Process_2_Temporal_Check/Step_1_Temporal_Check.ipynb*. 
 
+Before applying the temporal correction, the number of classifications (i.e., mask number) used to create the mask should be determined. We ran a sensitivity test to compute overall accuracies for 5 mask numbers . As the mask number increased, overall accuracy improved. We set the mask number to 2 because it is close to the second-highest overall accuracy with fewer classifications used in the mask. If we had set the mask number to 4, the maps of the last four periods would be used as a mask and could not be temporally corrected, which was not practical given there were 10 maps in total.
 
+> Specifically, we:
+> 1) loop through "mask classification number";
+> 2) calculate the accuracy and determine the best "mask classification number" to be 2 (where window size is 3);
+> 3) loop throuth the iteration number;
+> 4) calculat the area change with diff iterations and determine the iteration number to be 8; 
 
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_2_1_1_temporal_window_accuracy.svg" width="600"/>
 
+After determining the mask number, we ran another sensitivity test to determine the temporal correction's iteration number. We found that after 8 iterations, the built-up area remained stable. This pattern can be found for all classifications from 1990 to 2019. As a result, we determined the iteration number to be 8.
 
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_2_1_2_plt_temporal_iteration_area.svg" width="600"/>
 
+Lastly, we get the final bulit-up land maps of the study area:
 
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_1_Classification_demonstration.jpg" />
 
+#### -------------------- Compare this study with other datasets  --------------------------
 
+The code for this setction is in *North_China_Plain_GEE_Organized/Process_2_Temporal_Check/Step_2_Area_Accuracy_Comparision.ipynb*. 
 
+> Specifically, we:
+> 1) import other datasets;
+> 2) remap the bulit-up land pixel of all dataset (including this study) to year;
+> 3) loop throuth each Dataset-year bands;
+> 4) calculat the area and accuray;
 
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_2_3_Acc_compare.svg" width="600"/>
+
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_5_Compare_dataset.jpg" />
 
 
 
