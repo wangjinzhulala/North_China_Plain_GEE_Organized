@@ -255,6 +255,11 @@ Specifically, we:
 
 **To make the temporal-correction easier to deployed, we packed it into a python-class in *North_China_Plain_GEE_Organized/blob/master/Process_1_GEE_Python_Classification/BackGround_modules/Class_5_Temporal_consistency_check.py*. After that, every time we want to temporal correct a series of built-up land maps, we just need to import this class, specify the input maps and mask number.**
 
+**The below figure shows how the temporal-correction works.**
+<p align="center">
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/The%20work%20Flow_Page_4.jpg" />
+</p>
+
 #### -------------------- Apply the temporal check  --------------------------
 
 The code for this setction is in *North_China_Plain_GEE_Organized/Process_2_Temporal_Check/Step_1_Temporal_Check.ipynb*. 
