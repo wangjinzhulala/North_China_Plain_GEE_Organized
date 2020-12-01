@@ -10,6 +10,8 @@
 >- Open "Anaconda Prompt", then type in "cd C:/Users/wangj/Desktop/North_China_Plain_GEE_Organized"
 >- Type "conda env create --file environment.yml"
 
+_________________________________________________________
+
 ### Why North China Plain?
 - North China Plain is one of China's food base, providing over 1/3 of food to feed 1.4 billion people of Chinese
 - North China Plain is one of the fastest urbinazated region in this planet, the urban population increase from ~20% to ~60% from 1990 to 2019
@@ -19,6 +21,7 @@
 - Result showed that using Fourier features boost the classification accuracy of using Landsat 5 TM to be close to using Landsat 8 OLI and Sentinel 2 MSI
 - We use temporal correction to remove inconsistent classifications and promote all accuracies of 1990-2019 to >94%.
 
+_________________________________________________________
 ## Before using the repository
 This repository allows you to reproduce the results of the mapping. Some knowledge are required to use the codes:
 - Google Earth Engine (GEE) skills, which can be learnt from [here](https://developers.google.com/earth-engine/guides). If you know chinese, feel free to see this [tutorial](https://developers.google.com/earth-engine/tutorials/edu#chinese-language-materials)
@@ -27,9 +30,10 @@ This repository allows you to reproduce the results of the mapping. Some knowled
 
 **After mastring above skills, please follow below steps to repreduce the results.**
 
+_________________________________________________________
 ## Generall Workflow
 
-### The input data
+#### --------------------------------------------------The input data--------------------------------------------------
 
 There are five types of input data for the built-up land mapping, all of them (except for Meteorology data) can be accessed at the GEE.
 - Spectral: the cloud-free image of Landsat/Sentinel
@@ -50,42 +54,77 @@ There are five types of input data for the built-up land mapping, all of them (e
 |Fourier|	Coefficients of the Discrete Fourier Transformation	|30 m	|24	|1990-2019|
 |Meteorology	|China Meteorological Forcing Data	|1°	|7	|1990-2019|
 |Terrain|	Elevation	|30 m	|1	|1990-2019|
-| |	Slope	|30 m	|1	|1990-2019| 
+| |	Slope	|30 m	|1	|1990-2019|
 
+#### --------------------------------------------------The study area--------------------------------------------------
+Five middle and eastern provinces of China corresponding to the North China Plain region were selected as the study area . The area spanned 780,000 km2 and five provinces (i.e., Henan, Hebei, Shandong, Anhui, and Jiangsu) and two metropoles  (Beijing and Tianjin). The study area is one of China’s fastest developing regions, with the urban population rate (excluding the two metropoles) tripling from ~20% in 1990 to ~60% in 2018. The North China Plain holds a strategic position in China in terms of economic development and food security, generating ~37% of the gross domestic product and ~35% of China’s grain production in 2019.
 
-### The workflow
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Map_1_Research_Arae.jpg"  width="600"/>
+
+#### --------------------------------------------------The workflow--------------------------------------------------
 The generall work flow is as follows:
-- Creating control points and visually inspect each of them.
 - Preprocessing of input image data.
+- Creating control points and visually inspect each of them.
 - Conduct the classification using Random Forest
 - Apply a Temporal-correction to remove inconsistent classifications
 - Compare the "overall accuracy" and "area change" between this study and other datasets.
 
 ![The workflow](https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/The%20work%20Flow_Page_1.jpg)
 
+## Preprocessing of input image data
+#### ----------------- Step_1: Dtermine the best Stack-years, Harmonic number and export the Fourier images -----------------
+It is weird to process the Fourier transform at the first step. But we need to figure out how many data will be used in the Fourier transofrm. For example, if we use 2 years of data for the transform, then we will also need to use two years of data to create the cloud-free image of Landsat. As a result, the images used (aka, the stack-year) for Fourier transform determines the other data's producing.
+
+The code for find the optimum Stack-years and Harmonic number is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_1_Data_preparation_Fourier_transformation*
+
+There ara two Jyputer Notebook files in this path:
+
+> *Step_1_Detemine the best Harmonic number.ipynb* is to Determine the best "Harmonic number" for creating the Fourier images.
+
+> Specifically, 100 random points were distributed through the research area, and the mean error between the original value and the fitted value for each point was computed with different harmonic numbers and stack years. The harmonic numbers were set to 1–10, and the stack years were set to 1–5 (where 1 means using only the normalized data from 2015, while 5 means using all the normalized indices from 2015–2019). The harmonic number was determined to be 3, i.e., where the most significant drop in mean error occurred. Fewer harmonic numbers are preferred as they produce fewer coefficients for later classification. The stack year was also determined to be 3 by balancing the data used for the discrete Fourier transform and the mean error decrease. Fewer stack years are preferred because built-up land can be mapped at a higher frequency if fewer data are used for the discrete Fourier transform.
+
+> <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_1_Harmonic_Span.svg"  width="600"/>
+
+> *Step_2_Create_Fourier_imgs.ipynb* is to export the Fourier images to GEE_assest.
+
+> Specifically, we:
+> 1) Loop through 1990-2019 by 3-year intervales;
+> 2) Create the Fourier image using 3-year stack of NDVI/EVI/NDBI, respectively;
+> 3) Export the Fourier image to Assest with name "AmplitudePhase{year}"
 
 
+#### ---------------------------- Step_2: Create the NDVI/EVI/NDBI images (Indices predictor)  ----------------------------
+The code for this step is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_2_Data_preparation_Create_Normalized_index_images*. Only one Notebook in this path, which will:
+
+> 1) Stack 3-years Landsat data;
+> 2) Compute the mean image of the 3-years Landsat data;
+> 3) Create the NDVI/EVI/NDBI from the mean image
+
+#### ---------------------------- Step_3: Create the cloud-free images (Spectrum predictor) ----------------------------
+The code for this step is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_3_Data_preparation_Create_Landsat_Sentinel_Cloud_free_image*. Only one Notebook in this path, which will:
+
+> 1) Stack 3-years Landsat/Sentinel data;
+> 2) Apply the "simpleComposite" to create Landsat cloud-free image,use 'QA' band to to create Sentinel cloud-free image;
+> 3) Export the result to Assest
+
+#### ---------------------------- Step_4: Create the Meteorology images (Meteorology predictor)   ----------------------------
+The code for this step is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_4_Data_preparation_Prepare_Meterological_data/*. Two Notebooks are in this path:
+
+> *Step_1_Convert_NetCDF_to_individual_TIF.ipynb* is to conver the raw NetCDF meteorogoly data to GeoTiff formate. This step is not necessary for the analysis of this study, and it requires the ArcGIS pro Python library.
+
+> Specifically, we:
+> 1) Import each NetCDF as multibands tif;
+> 2) Export each band to a sigle Tif file
+
+> *SStep_2_Composite_Meterology_data_into_3_year_mean_image.ipynb* is to compute the mean image of meteorology data in GEE.
+
+> Specifically, we:
+> 1) stack 3-years of meteorology data;
+> 2) create the mean image;
+> 3) export the mean image to Assest
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Creating control points
 
 
 
