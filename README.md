@@ -74,7 +74,7 @@ The generall work flow is as follows:
 _________________________________________________________
 
 ## Preprocessing of input image data
-#### ----------------- Step_1: Dtermine the best Stack-years, Harmonic number and export the Fourier images -----------------
+#### ----------------- Dtermine the best Stack-years, Harmonic number and export the Fourier images -----------------
 It is weird to process the Fourier transform at the first step. But we need to figure out how many data will be used in the Fourier transofrm. For example, if we use 2 years of data for the transform, then we will also need to use two years of data to create the cloud-free image of Landsat. As a result, the images used (aka, the stack-year) for Fourier transform determines the other data's producing.
 
 The code for find the optimum Stack-years and Harmonic number is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_1_Data_preparation_Fourier_transformation*
@@ -95,21 +95,21 @@ There ara two Jyputer Notebook files in this path:
 > 3) Export the Fourier image to Assest with name "AmplitudePhase{year}"
 
 
-#### ---------------------------- Step_2: Create the NDVI/EVI/NDBI images (Indices predictor)  ----------------------------
+#### ---------------------------- Create the NDVI/EVI/NDBI images (Indices predictor)  ----------------------------
 The code for this step is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_2_Data_preparation_Create_Normalized_index_images*. Only one Notebook in this path, which will:
 
 > 1) Stack 3-years Landsat data;
 > 2) Compute the mean image of the 3-years Landsat data;
 > 3) Create the NDVI/EVI/NDBI from the mean image
 
-#### ---------------------------- Step_3: Create the cloud-free images (Spectrum predictor) ----------------------------
+#### ---------------------------- Create the cloud-free images (Spectrum predictor) ----------------------------
 The code for this step is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_3_Data_preparation_Create_Landsat_Sentinel_Cloud_free_image*. Only one Notebook in this path, which will:
 
 > 1) Stack 3-years Landsat/Sentinel data;
 > 2) Apply the "simpleComposite" to create Landsat cloud-free image,use 'QA' band to to create Sentinel cloud-free image;
 > 3) Export the result to Assest
 
-#### ---------------------------- Step_4: Create the Meteorology images (Meteorology predictor)   ----------------------------
+#### ---------------------------- Create the Meteorology images (Meteorology predictor)   ----------------------------
 The code for this step is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_4_Data_preparation_Prepare_Meterological_data/*. Two Notebooks are in this path:
 
 > *Step_1_Convert_NetCDF_to_individual_TIF.ipynb* is to conver the raw NetCDF meteorogoly data to GeoTiff formate. This step is not necessary for the analysis of this study, and it requires the ArcGIS pro Python library.
@@ -154,7 +154,7 @@ _________________________________________________________
 
 ## Conduct the classification using Random Forest
 
-#### ---------------------------- Before classification, make preparation and determine some parameter ----------------------------
+#### ------------------ Before classification, make preparation and determine some parameters ----------------------
 
 The code for this section is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_6_Before_classification_Feature_selection/*. There are 4 steps for this section:
 
@@ -171,7 +171,61 @@ The code for this section is in *North_China_Plain_GEE_Organized/Process_1_GEE_P
 
 > We used the sklearn.model_selection.GridSearchCV module to test the impacts of tree number on accuracy . We found no accuracy gains were achieved with more than 100 trees. Thus we set the tree number to 100. We also investigated control sample sizes from 0.5% to 99% of the sample and computed corresponding accuracy . We found that ~50% of the control samples were sufficient to high accuracy. In this study, 75% of the control samples were used for built-up land mapping, among which 70% were used to train the RF classifier. As a result, 52.5% (75% × 70%) of control samples were used to train the RF classifier, which was sufficient for stable classification.
 
+> *Step_4_Test_the_sample_size.ipynb*  run a sensitive test for sample-size to accuracy.
+
+> Specifically, we:
+> 1) loop through the sample size from (0.05% to 99%) of the control sample;
+> 2) calculate the accuracy
+
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_6_1_Tree_Size_Accuracy.svg"  width="600"/>
+
+#### ------------------ Use the determined parameters to perform the classification ----------------------
+
+The code for this setction is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_7_Classification_on_img/Step_1_Classification_random_split_10_layers.ipynb*, which classifiy the input image to get built-up land maps. Because different training samples produce different classifications, we repeated the classification 10 times with a different sample splitting state (i.e., a seed number set from 0 to 9).
+
+> Specifically, we:
+> 1) loop through each year-range (1990-2019 at 3-year intervals);
+> 2) loop through each seed number (0-9) to create 10 classifications with diff samples; 3) export classification to Assest
+
+#### -------------- Sum the 10 classifications and apply a threshold to produce final classificaiton --------------------
+The code for this setction is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_8_Determine_the_threshold_for_the_sum_of_10_random_classification/*, there are two Notebooks for this section.
+
+> *Step_1_Threshold_For_sum_of_10_random_classifications.ipynb* is to find out the optimu threshold to produce the final classification out of 10 classifications each with a different training sample
+
+> Specifically, we summed the 10 classifications and created the final classification to be the pixels greater or equal to different thresholds. It shows that a threshold of 4 led to the highest accuracy. We futher make a map to shows misclassifications of bare lands or farmland rotations beening removed after applying the threshold, specifially, we:
+
+> 1) sum all 10 classifications to get a image with value from 0 to 10;
+> 2) loop through each threshold, conver the pixel >= threshol to 1, others to 0;
+> 3) calculate the accuracy
+
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_8_Ten_folds_correction.svg"  width="600"/>
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_3_ten_folds_sum.jpg"  width="600"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
