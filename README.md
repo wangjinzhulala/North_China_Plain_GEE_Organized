@@ -221,7 +221,8 @@ The code for this setction is in *North_China_Plain_GEE_Organized/Process_1_GEE_
 
 > Specifically, we:
 > 1) loop through each year-range (1990-2019 at 3-year intervals);
-> 2) loop through each seed number (0-9) to create 10 classifications with diff samples; 3) export classification to Asset
+> 2) loop through each seed number (0-9) to create 10 classifications with diff samples; 
+> 3) export classification to Asset
 
 #### -------------- Sum the 10 classifications and apply a threshold to produce the final classification --------------------
 The code for this setction is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_8_Determine_the_threshold_for_the_sum_of_10_random_classification/*, there are two Notebooks for this section.
