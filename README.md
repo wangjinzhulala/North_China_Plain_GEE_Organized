@@ -13,7 +13,7 @@
 _________________________________________________________
 
 ### Why North China Plain?
-- North China Plain is one of China's food base, providing over 1/3 of food to feed 1.4 billion people of Chinese
+- North China Plain is one of China's food base, providing over 1/3 of food to feed 1.4 billion Chinese people. 
 - North China Plain is one of the fastest urbanized regions on this planet, the urban population increase from ~20% to ~60% from 1990 to 2019
 ### What is the value of these mapping methods?
 - Using early time remotely sensed imagery (e.g., Landsat 5 TM) achieve low accuracy than recent data (e.g., Landsat 8 OLI/Sentinel 2 MSI)
