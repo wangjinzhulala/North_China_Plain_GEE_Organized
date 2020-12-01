@@ -185,7 +185,7 @@ The code for this section is in *North_China_Plain_GEE_Organized/Process_1_GEE_P
 
 > *Step_1_Extract_img_value_to_sample_points.ipynb* is to extract the input image's value to control points.
 
-> Why doing that? Because we can directly use the control points with image's value to train the classifier, otherwise a lot of time would be wasted during classifier training on "Extracting image value to points"
+Why extract image value to control points? Because by doing so we can directly use the control points with image's value to train the classifier, otherwise a lot of time would be wasted during classifier training on "Extracting image value to points"
 
 > Specifically, we:
 > 1) stack all input images into a multiband image;
@@ -196,6 +196,7 @@ The code for this section is in *North_China_Plain_GEE_Organized/Process_1_GEE_P
 
  We used the sklearn.model_selection.GridSearchCV module to test the impacts of tree number on accuracy. We found no accuracy gains were achieved with more than 100 trees. Thus we set the tree number to 100. We also investigated control sample sizes from 0.5% to 99% of the sample and computed the corresponding accuracy. We found that ~50% of the control samples were sufficient to high accuracy. In this study, 75% of the control samples were used for built-up land mapping, among which 70% were used to train the RF classifier. As a result, 52.5% (75% × 70%) of control samples were used to train the RF classifier, which was sufficient for stable classification.
 
+The below two figures demonstrate the incorporation of Fourier input-bands improved the classification a lot.
 <p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_6_2_plt_inbands_acc_ribbon.svg"  width="800"/>
 </p>
@@ -203,7 +204,6 @@ The code for this section is in *North_China_Plain_GEE_Organized/Process_1_GEE_P
 <p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_2_Show_input_bands_impact.jpg" />
 </p>
-
 
 > *Step_4_Test_the_sample_size.ipynb*  run a sensitive test for sample-size to accuracy.
 
