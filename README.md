@@ -60,7 +60,7 @@ There are five types of input data for the built-up land mapping, all of them (e
 Five middle and eastern provinces of China corresponding to the North China Plain region were selected as the study area. The area spanned 780,000 km2 and five provinces (i.e., Henan, Hebei, Shandong, Anhui, and Jiangsu) and two metropoles  (Beijing and Tianjin). The study area is one of China’s fastest developing regions, with the urban population rate (excluding the two metropoles) tripling from ~20% in 1990 to ~60% in 2018. The North China Plain holds a strategic position in China in terms of economic development and food security, generating ~37% of the gross domestic product and ~35% of China’s grain production in 2019.
 
 <p align="center">
-<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Map_1_Research_Arae.jpg"  width="600"/>
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Map_1_Research_Arae.jpg"  width="800"/>
 </p>
 
 #### --------------------------------------------------The workflow--------------------------------------------------
@@ -235,11 +235,11 @@ The code for this setction is in *North_China_Plain_GEE_Organized/Process_1_GEE_
 > 3) calculate the accuracy
 
 <p align="center">
-<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_8_Ten_folds_correction.svg"  width="600"/>
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_8_Ten_folds_correction.svg"  width="800"/>
 </p>
 
 <p align="center">
-<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_3_ten_folds_sum.jpg"  width="600"/>
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_3_ten_folds_sum.jpg"  width="800"/>
 </p>
 
 > *Step_2_Create_10_folds_corrected_img.ipynb* is to export the final classification computed from the sum image of 10 classifications
@@ -299,7 +299,7 @@ The code for this setction is in *North_China_Plain_GEE_Organized/Process_2_Temp
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_2_3_Acc_compare.svg" width="1000"/>
 </p>
 
-<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_5_Compare_dataset.jpg" />
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_5_Compare_dataset.jpg" width="1000"/>
 
 
 
