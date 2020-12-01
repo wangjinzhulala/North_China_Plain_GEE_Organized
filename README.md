@@ -130,7 +130,7 @@ The code for this step is in *North_China_Plain_GEE_Organized/Process_1_GEE_Pyth
 > 1) Import each NetCDF as multibands tif;
 > 2) Export each band to a sigle Tif file
 
-> *SStep_2_Composite_Meterology_data_into_3_year_mean_image.ipynb* is to compute the mean image of meteorology data in GEE.
+> *Step_2_Composite_Meterology_data_into_3_year_mean_image.ipynb* is to compute the mean image of meteorology data in GEE.
 
 > Specifically, we:
 > 1) stack 3-years of meteorology data;
@@ -200,6 +200,9 @@ The code for this section is in *North_China_Plain_GEE_Organized/Process_1_GEE_P
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_6_2_plt_inbands_acc_ribbon.svg"  width="600"/>
 </p>
 
+<p align="center">
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_2_Show_input_bands_impact.jpg" />
+</p>
 
 
 > *Step_4_Test_the_sample_size.ipynb*  run a sensitive test for sample-size to accuracy.
@@ -211,6 +214,7 @@ The code for this section is in *North_China_Plain_GEE_Organized/Process_1_GEE_P
 <p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_1_6_1_Tree_Size_Accuracy.svg"  width="600"/>
 </p>
+
 #### ------------------ Use the determined parameters to perform the classification ----------------------
 
 The code for this setction is in *North_China_Plain_GEE_Organized/Process_1_GEE_Python_Classification/Sub_Process_7_Classification_on_img/Step_1_Classification_random_split_10_layers.ipynb*, which classifiy the input image to get built-up land maps. Because different training samples produce different classifications, we repeated the classification 10 times with a different sample splitting state (i.e., a seed number set from 0 to 9).
@@ -271,6 +275,12 @@ After determining the mask number, we ran another sensitivity test to determine 
 <p align="center">
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_2_1_2_plt_temporal_iteration_area.svg" width="600"/>
 </p>
+
+The temporal correction has removed inconsistent classification.
+<p align="center">
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_4_Temporal_correction.jpg" />
+</p>
+
 Lastly, we get the final bulit-up land maps of the study area:
 
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_1_Classification_demonstration.jpg" />
@@ -286,7 +296,7 @@ The code for this setction is in *North_China_Plain_GEE_Organized/Process_2_Temp
 > 4) calculat the area and accuray;
 
 <p align="center">
-<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_2_3_Acc_compare.svg" width="600"/>
+<img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Process_4_Making_standard_figs_use_R/Section_2_3_Acc_compare.svg" width="1000"/>
 </p>
 
 <img src="https://github.com/wangjinzhulala/North_China_Plain_GEE_Organized/blob/master/Support_Result_Images/Result_5_Compare_dataset.jpg" />
