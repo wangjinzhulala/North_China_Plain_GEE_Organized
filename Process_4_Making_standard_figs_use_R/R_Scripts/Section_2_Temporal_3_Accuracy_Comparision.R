@@ -46,8 +46,8 @@ data_2_3_line = data.area_change %>%
   group_by(year,Source) %>% 
   summarise(area = sum(area_km2)) %>% 
   mutate(Source = str_replace(Source, "My", "This study")) %>% 
-  mutate(Source = str_replace(Source,'Global Urban He','Global Urban (He et al., 2019)'))%>% 
-  mutate(Source = str_replace(Source,'Global Urban Liu','Global Urban (Liu et al., 2018)'))%>% 
+  mutate(Source = str_replace(Source,'Global Urban He','Global Urban Expansion'))%>% 
+  mutate(Source = str_replace(Source,'Global Urban Liu','Global Urban Dynamics'))%>% 
   mutate(Source = str_replace(Source,'MODIS','MCD12Q1'))
 
 p_2_3 = ggplot( data = data_2_3_line, aes(x=year,y=area))  +
