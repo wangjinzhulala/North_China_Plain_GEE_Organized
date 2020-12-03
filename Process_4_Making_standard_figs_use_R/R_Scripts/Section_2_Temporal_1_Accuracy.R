@@ -144,6 +144,7 @@ plt_temporal_iteration_area = p_2_2 +
         axis.line.x.bottom = element_line(),
         axis.line.y.left = element_line(),
         legend.position = c(0.8,0.85),
+        legend.background = element_blank(),
         legend.key = element_rect(colour = NA, fill = NA)) +
   xlab('Iteration number')+
   ylab('Area (km2)') +
