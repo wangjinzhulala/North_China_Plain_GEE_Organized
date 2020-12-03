@@ -24,16 +24,18 @@ p_2_2 = data.area_change %>%
   ggplot(aes(x=year,y=area,color=EN_Name,group=EN_Name)) +
   geom_line(size=0.5) +
   geom_point(size=1.5) +
-  scale_color_hue()
+  scale_color_discrete(breaks=c("Shandong","Henan","Hebei","Anhui","Jiangsu","Beijing","Tianjin"))
 
 plt_area_change = p_2_2 +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         axis.line.x.bottom = element_line(),
+        axis.text.x = element_text(angle = 30, vjust = 0.5),
         axis.line.y.left = element_line(),
-        legend.position = c(0.13, 0.73),
-        legend.key = element_rect(fill = NA )) +
+        legend.position = c(0.13, 0.75),
+        legend.key = element_rect(fill = NA ),
+        legend.background = element_blank()) +
   scale_y_continuous(breaks = seq(0,200000,5000),labels = seq(0,20,0.5)) +
   labs(color = '',
        fill  = '',
@@ -49,17 +51,17 @@ plt_area_change
 
 ggsave(plot = plt_area_change,
        "../Section_2_2_Area_change.svg", 
-       width = 20, 
-       height = 10, 
+       width = 13, 
+       height =10, 
        units = "cm",
-       dpi=500)
+       dpi=800)
 
 ggsave(plot = plt_area_change,
        "../Section_2_2_Area_change.png", 
-       width = 20, 
-       height = 10, 
+       width = 13, 
+       height =10, 
        units = "cm",
-       dpi=500)
+       dpi=800)
 
 
 

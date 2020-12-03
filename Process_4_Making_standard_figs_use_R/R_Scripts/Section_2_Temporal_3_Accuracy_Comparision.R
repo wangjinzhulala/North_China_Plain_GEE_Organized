@@ -124,7 +124,9 @@ plt_compare_acc_area = ggarrange(plt_area_change_compare,
           nrow=2, 
           common.legend = TRUE, 
           legend="right",
-          labels = c('a)','b)'))
+          labels = c('a)','b)'),
+          label.x = 0.2,
+          label.y = 0.7)
 
 plt_compare_acc_area
 
@@ -133,17 +135,17 @@ plt_compare_acc_area
 
 ggsave(plot = plt_compare_acc_area,
        "../Section_2_3_Acc_compare.svg", 
-       width = 25, 
-       height = 20, 
+       width = 15, 
+       height = 10, 
        units = "cm",
-       dpi=500)
+       dpi=800)
 
 ggsave(plot = plt_compare_acc_area,
        "../Section_2_3_Acc_compare.png", 
-       width = 25, 
-       height = 20, 
+       width = 15, 
+       height = 10, 
        units = "cm",
-       dpi=500)
+       dpi=800)
 
 
 

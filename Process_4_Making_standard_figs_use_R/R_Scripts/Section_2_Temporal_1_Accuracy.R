@@ -204,6 +204,7 @@ plt_compare_original_temporal_acc = p_2_3 +
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         axis.line.x.bottom = element_line(),
+        axis.text.x = element_text(angle = 30, vjust = 0.5),
         axis.line.y.left = element_line(),
         legend.position = c(0.17, 0.9),
         legend.key = element_rect(fill = NA ))+
@@ -260,15 +261,15 @@ ggsave(plot = plt_temporal_iteration_area,
 
 ggsave(plot = plt_compare_original_temporal_acc,
        "../Section_2_1_2_compare_original_temporal_acc.svg", 
-       width = 20, 
-       height = 10, 
+       width = 16, 
+       height = 9, 
        units = "cm",
        dpi=500)
 
 ggsave(plot = plt_compare_original_temporal_acc,
        "../Section_2_1_2_compare_original_temporal_acc.png", 
-       width = 20, 
-       height = 10, 
+       width = 16, 
+       height = 9, 
        units = "cm",
        dpi=500)
 

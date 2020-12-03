@@ -54,6 +54,7 @@ p_1_6_2 = data.p_6_grid_acc %>%
   mutate(In_Bands = str_replace_all(In_Bands, "Meterology", "Meteorology")) %>% 
   mutate(Accuracy = Accuracy *100) %>% 
   ggplot(aes(x=Year,y=Accuracy,group=In_Bands,color=In_Bands,fill=In_Bands)) +
+  guides(fill = guide_legend(reverse = TRUE),color = guide_legend(reverse = TRUE))+
   stat_summary(fun = 'mean',geom = 'line') +
   stat_summary(fun.data = 'mean_se',
                geom = 'ribbon',
@@ -66,8 +67,9 @@ plt_inbands_acc_ribbon = p_1_6_2 +
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
         axis.line.x.bottom = element_line(),
+        axis.text.x = element_text(angle = 30,vjust = 0.5),
         axis.line.y.left = element_line(),
-        legend.position = c(0.3, 0.60),
+        legend.position = c(0.35, 0.59),
         legend.background = element_blank()) +
   ylab('Accuracy(%)') +
   labs(color = 'Input predictors',
@@ -167,17 +169,17 @@ ggsave(plot = plt_inbands_acc_bar,
 
 ggsave(plot = plt_inbands_acc_ribbon,
        "../Section_1_6_2_plt_inbands_acc_ribbon.svg", 
-       width = 20, 
-       height = 13, 
+       width = 16.5, 
+       height = 14, 
        units = "cm",
-       dpi=500)
+       dpi=800)
 
 ggsave(plot = plt_inbands_acc_ribbon,
        "../Section_1_6_2_plt_inbands_acc_ribbon.png", 
-       width = 20, 
-       height = 13, 
+       width = 16.5, 
+       height = 14, 
        units = "cm",
-       dpi=500)
+       dpi=800)
 
 
 ggsave(plot = plot,
