@@ -52,6 +52,8 @@ p_1_6_2 = data.p_6_grid_acc %>%
   mutate(Year = str_replace(Year, "_", "-")) %>% 
   mutate(In_Bands = str_replace_all(In_Bands, "_", " + ")) %>% 
   mutate(In_Bands = str_replace_all(In_Bands, "Meterology", "Meteorology")) %>% 
+  mutate(In_Bands = str_replace_all(In_Bands, "Spectrum", "Spectral")) %>% 
+  mutate(In_Bands = str_replace_all(In_Bands, "Normalize", "Indices")) %>% 
   mutate(Accuracy = Accuracy *100) %>% 
   ggplot(aes(x=Year,y=Accuracy,group=In_Bands,color=In_Bands,fill=In_Bands)) +
   guides(fill = guide_legend(reverse = TRUE),color = guide_legend(reverse = TRUE))+
@@ -169,15 +171,15 @@ ggsave(plot = plt_inbands_acc_bar,
 
 ggsave(plot = plt_inbands_acc_ribbon,
        "../Section_1_6_2_plt_inbands_acc_ribbon.svg", 
-       width = 16.5, 
-       height = 14, 
+       width = 20, 
+       height = 13, 
        units = "cm",
        dpi=800)
 
 ggsave(plot = plt_inbands_acc_ribbon,
        "../Section_1_6_2_plt_inbands_acc_ribbon.png", 
-       width = 16.5, 
-       height = 14, 
+       width = 20, 
+       height = 13, 
        units = "cm",
        dpi=800)
 

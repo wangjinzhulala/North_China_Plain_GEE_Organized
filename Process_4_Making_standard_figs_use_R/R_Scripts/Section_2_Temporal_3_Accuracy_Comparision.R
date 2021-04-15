@@ -135,17 +135,17 @@ plt_compare_acc_area
 
 ggsave(plot = plt_compare_acc_area,
        "../Section_2_3_Acc_compare.svg", 
-       width = 15, 
-       height = 10, 
+       width = 19, 
+       height = 12, 
        units = "cm",
-       dpi=800)
+       dpi=500)
 
 ggsave(plot = plt_compare_acc_area,
        "../Section_2_3_Acc_compare.png", 
-       width = 15, 
-       height = 10, 
+       width = 19, 
+       height = 12, 
        units = "cm",
-       dpi=800)
+       dpi=500)
 
 
 

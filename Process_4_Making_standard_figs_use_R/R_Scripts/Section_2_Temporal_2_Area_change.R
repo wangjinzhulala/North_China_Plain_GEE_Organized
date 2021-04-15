@@ -51,17 +51,17 @@ plt_area_change
 
 ggsave(plot = plt_area_change,
        "../Section_2_2_Area_change.svg", 
-       width = 13, 
+       width = 19, 
        height =10, 
        units = "cm",
-       dpi=800)
+       dpi=500)
 
 ggsave(plot = plt_area_change,
        "../Section_2_2_Area_change.png", 
-       width = 13, 
+       width = 19, 
        height =10, 
        units = "cm",
-       dpi=800)
+       dpi=500)
 
 
 
