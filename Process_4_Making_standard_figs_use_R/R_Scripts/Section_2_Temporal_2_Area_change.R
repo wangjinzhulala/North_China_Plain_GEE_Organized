@@ -5,6 +5,7 @@ library(cowplot)
 library(stringr)
 library(comprehenr)
 library(stringr)
+library(ggpubr)
 
 
 #________________________step 1: read data and format the df________________________
@@ -14,7 +15,11 @@ data.area_change = read.csv(paste("../../Process_2_Temporal_Check/",
                              stringsAsFactors = T)%>% 
   mutate(year = paste0((year-1),'-',(year+1)))
 
-
+data.area_change_percent = read.csv(paste("../../Process_2_Temporal_Check/",
+                                  "Result/",
+                                  "Area_change_percent.csv",sep=""),
+                            stringsAsFactors = T)%>% 
+  mutate(year = paste0((year-1),'-',(year+1)))
 
 
 #______________________step 2: make plot of area change of my study________________________
@@ -26,7 +31,29 @@ p_2_2 = data.area_change %>%
   geom_point(size=1.5) +
   scale_color_discrete(breaks=c("Shandong","Henan","Hebei","Anhui","Jiangsu","Beijing","Tianjin"))
 
+p_2_2_pct = data.area_change_percent %>% 
+  ggplot(aes(x=year,y=Percent.comparasion,color=EN_Name,group=EN_Name)) +
+  geom_line(size=0.5) +
+  geom_point(size=1.5) +
+  scale_color_discrete(breaks=c("Shandong","Henan","Hebei","Anhui","Jiangsu","Beijing","Tianjin"))
+
 plt_area_change = p_2_2 +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.line.x.bottom = element_line(),
+        axis.text.x = element_blank(), # remove x-axis text 
+        axis.line.y.left = element_line(),
+        legend.position = c(0.13, 0.75),
+        legend.key = element_rect(fill = NA ),
+        legend.background = element_blank()) +
+  scale_y_continuous(breaks = seq(0,200000,5000),labels = seq(0,20,0.5)) +
+  labs(color = '',
+       fill  = '',
+       y = bquote('Area ('*10^5 ~km^2*')'),
+       x = '') # remove x label
+
+plt_area_change_pct = p_2_2_pct +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
@@ -36,30 +63,37 @@ plt_area_change = p_2_2 +
         legend.position = c(0.13, 0.75),
         legend.key = element_rect(fill = NA ),
         legend.background = element_blank()) +
-  scale_y_continuous(breaks = seq(0,200000,5000),labels = seq(0,20,0.5)) +
   labs(color = '',
        fill  = '',
-       y = bquote('Area ('*10^5 ~km^2*')'),
+       y = 'Percent Change(%)',
        x = 'Year')
 
-
-
+plt_area_pct = ggarrange(plt_area_change,
+                         plt_area_change_pct, 
+                         align = 'v',
+                         ncol=1, 
+                         nrow=2, 
+                         common.legend = TRUE, 
+                         legend="right",
+                         labels = c('a)','b)'),
+                         label.x = 0.15,
+                         label.y = 0.9)
 
 
 #______________________step 4: save plot to disk________________________
-plt_area_change
+plt_area_pct
 
-ggsave(plot = plt_area_change,
+ggsave(plot = plt_area_pct,
        "../Section_2_2_Area_change.svg", 
        width = 19, 
-       height =10, 
+       height =15, 
        units = "cm",
        dpi=500)
 
-ggsave(plot = plt_area_change,
+ggsave(plot = plt_area_pct,
        "../Section_2_2_Area_change.png", 
        width = 19, 
-       height =10, 
+       height =15, 
        units = "cm",
        dpi=500)
 
